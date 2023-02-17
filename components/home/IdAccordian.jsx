@@ -78,7 +78,7 @@ const IdAccordian = ({title}) => {
                                 <li><span className='mr-2'>Address 2:</span><span className='tracking-wide text-white'>0x1BfC7c4Bce1DB93Ea3F48BFC52A6a7fccc770D3B</span> </li>
                                 <li><span className='mr-2'>Address 3:</span><span className='tracking-wide text-white'>0x1BfC7c4Bce1DB93Ea3F48BFC52A6a7fccc770D3B</span> </li>
                             </ul>
-                            <p className='mb-1'><span className='text-gray-500 font-semibold'>Approve required: </span><span>3</span></p>
+                            <p className='mb-1'><span className='text-gray-500 font-semibold'>Approval required: </span><span>3</span></p>
                             <p className='mb-1'><span className='text-gray-500 font-semibold'>Creator: </span><span>Owner 1</span></p>
                         </div>
                         <div className='flex justify-evenly'>

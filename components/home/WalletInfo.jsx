@@ -23,7 +23,7 @@ const WalletInfo = () => {
                 <h1 className='text-xl font-semibold mt-3 text-gray-500'>Consensus </h1>
                 <div className='flex'>
                     <p><span>Total owner :</span> 3</p>
-                    <p className='mx-10'><span>Approve required :</span> 2</p>
+                    <p className='mx-10'><span>Approval required :</span> 2</p>
                 </div>
                 <h1 className='text-xl font-semibold mt-3 text-gray-500'>Stats </h1>
                 <div className='flex items-center flex-wrap'>
