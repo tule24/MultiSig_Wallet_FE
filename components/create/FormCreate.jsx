@@ -7,7 +7,8 @@ const FormCreate = () => {
     setTotal([...total])
   }
   return (
-    <div className='w-1/2 mt-4'>
+    <div className='w-1/2'>
+      <h1 className='text-3xl font-extrabold tracking-wider text-center my-10'>CREATE NEW WALLET</h1>
       <div className='flex flex-col justify-center items-center'>
         <div className="mb-6 w-full">
           <label className="block mb-2 text-md font-semibold text-gray-900 dark:text-white">Owner 1</label>
@@ -44,6 +45,16 @@ const FormCreate = () => {
         >
           <MdAdd size={25} />
         </button>
+        <div className="my-6 w-full">
+          <label className="block mb-2 text-md font-semibold text-gray-900 dark:text-white">Approve require</label>
+          <input
+            type='number'
+            min={1}
+            max={total.length + 1}
+            className="w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required
+          />
+        </div>
         <button type="submit" className="mt-8 text-lg tracking-wide text-white bg-violet-700 hover:bg-violet-900 focus:ring-4 focus:outline-none focus:ring-violet-300 font-semibold rounded-lg sm:w-auto px-5 py-2.5 text-center dark:bg-violet-600 dark:hover:bg-violet-700 dark:focus:ring-violet-800">
           Create Multisig Wallet
         </button>

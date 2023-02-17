@@ -1,15 +1,8 @@
 import React, { useContext } from 'react'
 import Head from 'next/head'
 import { MSFactoryContext } from "@/Context/MSFactoryContext"
+import { WalletInfo, IdAccordian } from '@/components/home'
 const Home = () => {
-  const { theme, setTheme } = useContext(MSFactoryContext)
-  const changeTheme = () => {
-    if (theme === 'light') {
-      setTheme('dark')
-    } else {
-      setTheme('light')
-    }
-  }
   return (
     <>
       <Head>
@@ -18,7 +11,11 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className='bg-white text-black dark:bg-black dark:text-white h-screen w-screen'>
+      <div className='bg-gray-200 text-black dark:bg-black dark:text-white h-full w-full'>
+        <div className='w-4/5 mx-auto pt-32'>
+          <WalletInfo />
+          <IdAccordian title='ID PENDING'/>
+        </div>
       </div>
     </>
   )

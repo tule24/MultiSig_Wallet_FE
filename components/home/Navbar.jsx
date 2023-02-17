@@ -7,7 +7,7 @@ import { MSFactoryContext } from '@/Context/MSFactoryContext'
 const Navbar = () => {
     const { theme, setTheme } = useContext(MSFactoryContext)
     return (
-        <header className="px-10 py-4 bg-violet-500 fixed right-0 left-0">
+        <header className="px-10 py-4 bg-violet-500 fixed right-0 left-0 z-50">
             <div className="container flex justify-between items-center h-16 mx-auto">
                 <Link href={{ pathname: '/' }} className="flex justify-center items-center">
                     <p className='flex items-center font-semibold text-3xl relative'>
@@ -17,11 +17,14 @@ const Navbar = () => {
                     </p>
                 </Link>
                 <ul className="items-stretch hidden space-x-3 md:flex">
+                    <Link href={{ pathname: '/stats' }} className="flex items-center mr-10">
+                        <p className="mr-5 hover:text-gray-900 font-semibold text-xl">Stats</p>
+                    </Link>
                     <Link href={{ pathname: '/create' }} className="flex items-center mr-10">
                         <p className="mr-5 hover:text-gray-900 font-semibold text-xl">Create Wallet</p>
                     </Link>
                     <button className="inline-flex items-center border font-semibold py-2 px-3 focus:outline-none hover:bg-violet-800 rounded text-lg mt-4 md:mt-0"><TfiWallet size={20} className="mr-2" />Connect</button>
-                    <label class="inline-flex relative items-center mr-5 cursor-pointer">
+                    <label className="inline-flex relative items-center mr-5 cursor-pointer">
                         <input
                             type="checkbox"
                             className="sr-only peer"

@@ -1,3 +1,5 @@
 import Navbar from "./Navbar"
-
-export { Navbar }
+import WalletInfo from "./WalletInfo"
+import IdAccordian from "./IdAccordian"
+import Footer from "./Footer"
+export { Navbar, WalletInfo, IdAccordian, Footer }
