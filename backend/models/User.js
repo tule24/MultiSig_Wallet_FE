@@ -25,6 +25,6 @@ const userSchema = new Schema({
             message: "Only accept eth wallet"
         }
     },
-}, {timestamps: true})
+}, { versionKey: false })
 
 export default models.User || model('User', userSchema)

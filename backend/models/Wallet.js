@@ -72,6 +72,6 @@ const walletSchema = new Schema({
         type: Number,
         default: 0
     }
-}, { timestamps: true })
+}, { timestamps: true, versionKey: false })
 
 export default models.Wallet || model('Wallet', walletSchema)

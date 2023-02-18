@@ -30,7 +30,7 @@ const proposalSchema = new Schema({
         default: "Pending",
         enum: ["Pending", "Success", "Fail"]
     },
-    approvals: {
+    accept: {
         type: Number,
         default: 0
     },
@@ -38,6 +38,7 @@ const proposalSchema = new Schema({
         type: Number,
         default: 0
     },
+    vote: [Object],
     ownersAdd: {
         type: [String],
         validate: {
@@ -71,6 +72,6 @@ const proposalSchema = new Schema({
         type: Date,
         immutable: true
     }
-}, { timestamps: true })
+}, { timestamps: true, versionKey: false })
 
 export default models.Proposal || model('Proposal', proposalSchema)
