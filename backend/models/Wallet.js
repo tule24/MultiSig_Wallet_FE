@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose"
+import { Schema, model, models, Types } from "mongoose"
 import WAValidator from "wallet-address-validator"
 
 const walletSchema = new Schema({
@@ -28,10 +28,12 @@ const walletSchema = new Schema({
     approvalRequired: {
         type: Number,
         require: [true, "Please prove approve require"],
+        min: 1,
         validate: {
             validator: function (val) {
                 return val <= this.owners.length
-            }
+            },
+            message: "approvalRequired must be <= totalOwner"
         }
     },
     balance: {

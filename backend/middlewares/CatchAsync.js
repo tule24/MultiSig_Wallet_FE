@@ -1,4 +1,4 @@
-import { CustomAPIError } from "@backend/errors"
+import { CustomAPIError } from "@/backend/errors"
 import { StatusCodes } from 'http-status-codes'
 
 const catchAsync = (fn) => {

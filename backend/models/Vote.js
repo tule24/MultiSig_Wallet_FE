@@ -1,32 +1,17 @@
-import { Schema, model, models } from "mongoose"
-import WAValidator from "wallet-address-validator"
+import { Schema, model, models, Types } from "mongoose"
 
 const voteSchema = new Schema({
-    walletAddress: {
-        type: String,
-        validate: {
-            validator: function (val) {
-                return WAValidator.validate(val, 'ETH', 'testnet')
-            },
-            message: "Only accept eth wallet"
-        }
-    },
-    walletId: {
-        type: Number,
-        require: [true, "Please provide current ID from multisig wallet"]
+    proposalId: {
+        type: Types.ObjectId,
+        immutable: true,
+        require: [true, "Please provide proposal ID"],
+        ref: 'Proposal'
     },
     voter: {
-        type: String,
-        require: [true, "Please provide voter address"],
-        unique: true,
+        type: Types.ObjectId,
         immutable: true,
-        lowercase: true,
-        validate: {
-            validator: function (val) {
-                return WAValidator.validate(val, 'ETH', 'testnet')
-            },
-            message: "Only accept eth wallet"
-        }
+        require: [true, "Please provide voter id"],
+        ref: 'User'
     },
     vote: {
         type: Boolean,

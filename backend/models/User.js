@@ -17,7 +17,7 @@ const userSchema = new Schema({
     },
     wallets: {
         type: [String],
-        require: [true, "Please provide array wallet"],
+        default: [],
         validate: {
             validator: function (val) {
                 return val.every(el => WAValidator.validate(el, 'ETH', 'testnet'))

@@ -1,23 +1,29 @@
-import { Schema, model, models } from "mongoose"
+import { Schema, model, models, Types } from "mongoose"
+import WAValidator from "wallet-address-validator"
 
 const proposalSchema = new Schema({
-    walletAddress: {
-        type: String,
-        validate: {
-            validator: function (val) {
-                return WAValidator.validate(val, 'ETH', 'testnet')
-            },
-            message: "Only accept eth wallet"
-        }
-    },
     walletId: {
+        type: Types.ObjectId,
+        require: [true, "Please provide wallet id"],
+        immutable: true,
+        ref: 'Wallet'
+    },
+    contractId: {
         type: Number,
-        require: [true, "Please provide current ID from multisig wallet"]
+        immutable: true,
+        require: [true, "Please provide current ID from wallet contract"]
     },
     type: {
         type: String,
+        immutable: true,
         require: [true, "Please provide type of proposal"],
         enum: ["Transaction", "Consensus"]
+    },
+    creator: {
+        type: Types.ObjectId,
+        immutable: true,
+        require: [true, "Please provide creator id"],
+        ref: 'User'
     },
     state: {
         type: String,
@@ -31,10 +37,6 @@ const proposalSchema = new Schema({
     reject: {
         type: Number,
         default: 0
-    },
-    creator: {
-        type: String,
-        require: [true, "Please provide creator wallet"],
     },
     ownersAdd: {
         type: [String],
@@ -66,7 +68,8 @@ const proposalSchema = new Schema({
     },
     amount: Number,
     finishAt: {
-        type: Date
+        type: Date,
+        immutable: true
     }
 }, { timestamps: true })
 
