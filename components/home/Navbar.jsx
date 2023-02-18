@@ -1,11 +1,12 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { FaGoogleWallet } from 'react-icons/fa'
 import { CgKey } from 'react-icons/cg'
 import { TfiWallet } from 'react-icons/tfi'
-import { MSFactoryContext } from '@/Context/MSFactoryContext'
+import { useTheme } from 'next-themes'
+
 const Navbar = () => {
-    const { theme, setTheme } = useContext(MSFactoryContext)
+    const { theme, setTheme } = useTheme()
     return (
         <header className="px-10 py-4 bg-violet-500 fixed right-0 left-0 z-50">
             <div className="container flex justify-between items-center h-16 mx-auto">

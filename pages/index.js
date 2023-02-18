@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Head from 'next/head'
-import { MSFactoryContext } from "@/Context/MSFactoryContext"
 import { WalletInfo, IdAccordian } from '@/components/home'
 const Home = () => {
   return (
