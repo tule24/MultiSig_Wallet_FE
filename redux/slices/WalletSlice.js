@@ -8,7 +8,7 @@ const WalletSlice = createSlice({
     name: 'WalletSlice',
     initialState,
     reducers: {
-        getDataWallet: (state, action) => {
+        updateWallet: (state, action) => {
             const { payload } = action
             state.wallet = {...payload}
         }
@@ -16,5 +16,5 @@ const WalletSlice = createSlice({
 })
 
 const { actions, reducer } = WalletSlice
-export const { getDataWallet } = actions
+export const { updateWallet } = actions
 export default reducer

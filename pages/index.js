@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import { WalletInfo, IdAccordian } from '@/components/home'
+import { WalletInfo, IdAccordian, CreateID } from '@/components/home'
 const Home = () => {
   return (
     <>
@@ -13,6 +13,7 @@ const Home = () => {
       <div className='bg-gray-200 text-black dark:bg-black dark:text-white h-full w-full'>
         <div className='w-4/5 mx-auto pt-32'>
           <WalletInfo />
+          <CreateID />
           <IdAccordian title='ID PENDING'/>
         </div>
       </div>

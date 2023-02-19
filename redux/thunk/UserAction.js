@@ -1,12 +1,12 @@
 import { userServices } from '../services/UserServices'
-import { getDataUser } from '../slices/UserSlice'
+import { updateUser } from '../slices/UserSlice'
 import { StatusCodes } from 'http-status-codes'
 
 export const createUser = (address) => async (dispatch) => {
     try {
         const { data, status } = await userServices.login({ address })
         if (status <= StatusCodes.CREATED) {
-            dispatch(getDataUser(data.data))
+            dispatch(updateUser(data.data))
         } else {
             console.log(status)
         }

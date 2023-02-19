@@ -15,12 +15,12 @@ const ProposalSlice = createSlice({
         addCompleteProposal: (state, action) => {
 
         },
-        getDataProposal: (state, action) => {
+        updateProposal: (state, action) => {
 
         }
     }
 })
 
 const { actions, reducer } = ProposalSlice
-export const { getDataProposal } = actions
+export const { addPendingProposal, addCompleteProposal, updateProposal } = actions
 export default reducer

@@ -54,7 +54,6 @@ const FormCreate = () => {
                 onClick={() => { total.splice(i, 1); setTotal([...total]) }}
               ><MdClose size={25} /></button>
             </div>
-
           </div>
         ))}
         <button

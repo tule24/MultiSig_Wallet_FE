@@ -4,7 +4,7 @@ import { FcAlarmClock, FcBookmark, FcKey } from 'react-icons/fc'
 
 const IdAccordian = ({title}) => {
     return (
-        <div className='w-full py-20'>
+        <div className='w-full py-20 mt-10'>
             <div className='relative w-full overflow-hidden'>
                 <div className='w-full p-4 font-medium text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'>
                     <h1 className='text-3xl font-bold tracking-wide text-violet-500 text-center'>{title}</h1>
