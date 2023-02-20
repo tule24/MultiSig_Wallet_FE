@@ -1,4 +1,5 @@
 import Wallet from "../models/Wallet"
+import User from '../models/User'
 import { StatusCodes } from 'http-status-codes'
 import { NotFoundError } from '../errors'
 
@@ -17,11 +18,11 @@ const createWallet = async (req, res) => {
 
 const updateWallet = async (req, res) => {
     const { walletID } = req.query
-    const {address} = req.body 
+    const { address } = req.body
     if (address) {
         res.status(StatusCodes.BAD_REQUEST).send("address is immutable")
     } else {
-        const wallet = await Wallet.findByIdAndUpdate(walletID, req.body, { new: true, runValidators: true })
+        const wallet = await Wallet.findByIdAndUpdate(walletID, req.body, { new: true })
         if (!wallet) {
             throw new NotFoundError(`Not found wallet with id ${walletID}`)
         } else {

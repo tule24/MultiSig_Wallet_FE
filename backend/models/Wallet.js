@@ -1,4 +1,4 @@
-import { Schema, model, models, Types } from "mongoose"
+import { Schema, model, models } from "mongoose"
 import WAValidator from "wallet-address-validator"
 
 const walletSchema = new Schema({

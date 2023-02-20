@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    currentAccount: null,
+    currentAccount: '0x32f2fEFa54d1D46B7960e262c53bc95004b085e5',
     provider: null,
     signer: null,
     contractWallet: null,

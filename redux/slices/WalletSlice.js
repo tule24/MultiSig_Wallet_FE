@@ -10,7 +10,7 @@ const WalletSlice = createSlice({
     reducers: {
         updateWallet: (state, action) => {
             const { payload } = action
-            state.wallet = {...payload}
+            state.wallet = { ...payload }
         }
     }
 })

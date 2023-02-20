@@ -1,11 +1,13 @@
 import React from 'react'
 import { BsFillCaretDownFill } from 'react-icons/bs'
 import { FcAlarmClock, FcBookmark, FcKey } from 'react-icons/fc'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { voteID } from '@/redux/thunk/ProposalAction'
 
 const IdAccordian = ({ title, ids }) => {
-    const { currentAccount } = useSelector(state => state.Web3Reducer)
-
+    // const { currentAccount } = useSelector(state => state.Web3Reducer)
+    const { user } = useSelector(state => state.UserReducer)
+    const dispatch = useDispatch()
     return (
         <div className='w-full py-20 mt-10'>
             <div className='relative w-full overflow-hidden'>
@@ -28,7 +30,12 @@ const IdAccordian = ({ title, ids }) => {
                                 <FcAlarmClock size={20} className='mr-[3px]' />{ele.createdAt}
                             </h1>
                             {title === 'ID PENDING' && (
-                                !votes.find(ele => ele.vote === currentAccount) && <button type="button" className="z-10 px-3 py-1 font-semibold rounded dark:bg-violet-700 dark:text-white dark:hover:bg-violet-500 dark:hover:text-gray-800">Vote</button>
+                                // !ele.votes.find(ele => ele.voter === user.address) && (
+                                <>
+                                    <button type='button' onClick={() => dispatch(voteID(ele, true))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-green-700 dark:text-white dark:hover:bg-green-500 dark:hover:text-gray-800 mr-2">Accept</button>
+                                    <button type='button' onClick={() => dispatch(voteID(ele, false))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-red-700 dark:text-white dark:hover:bg-red-500 dark:hover:text-gray-800">Reject</button>
+                                </>
+                                // )
                             )}
                             {title === 'ID HISTORY' && (
                                 ele.state === 'success' ? (
@@ -71,9 +78,24 @@ const IdAccordian = ({ title, ids }) => {
                             <h1 className='text-lg font-semibold dark:text-white mx-20 flex items-center'>
                                 <FcKey size={20} className='mr-[3px]' />Consensus
                             </h1>
-                            <h1 className='text-lg font-semibold dark:text-white flex items-center'>
+                            <h1 className='text-lg font-semibold dark:text-white flex items-center mr-20'>
                                 <FcAlarmClock size={20} className='mr-[3px]' />{ele.createdAt}
                             </h1>
+                            {title === 'ID PENDING' && (
+                                // !ele.votes.find(ele => ele.voter === user.address) && (
+                                    <>
+                                        <button type='button' onClick={() => dispatch(voteID(ele, true))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-green-700 dark:text-white dark:hover:bg-green-500 dark:hover:text-gray-800 mr-2">Accept</button>
+                                        <button type='button' onClick={() => dispatch(voteID(ele, false))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-red-700 dark:text-white dark:hover:bg-red-500 dark:hover:text-gray-800">Reject</button>
+                                    </>
+                                // )
+                            )}
+                            {title === 'ID HISTORY' && (
+                                ele.state === 'success' ? (
+                                    <button className="z-10 px-3 py-1 font-semibold rounded dark:bg-green-700 dark:text-white dark:hover:bg-green-500 dark:hover:text-gray-800">Success</button>
+                                ) : (
+                                    <button className="z-10 px-3 py-1 font-semibold rounded dark:bg-red-700 dark:text-white dark:hover:bg-red-500 dark:hover:text-gray-800">Fail</button>
+                                )
+                            )}
                         </div>
                         <div className='absolute top-7 right-10 text-white transition-transform duration-500 rotate-0 peer-checked:rotate-180'>
                             <BsFillCaretDownFill />

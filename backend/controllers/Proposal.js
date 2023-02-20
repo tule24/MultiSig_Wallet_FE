@@ -1,4 +1,5 @@
 import Proposal from '@/backend/models/Proposal'
+import Wallet from '@/backend/models/Wallet'
 import { StatusCodes } from 'http-status-codes'
 import { NotFoundError } from '../errors'
 
@@ -8,9 +9,22 @@ const createProposal = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).send("Please provide contractId, wallet ID, proposal type & creator")
     } else {
         const proposal = await Proposal.create(req.body)
+        const wallet = await Wallet.findById(walletId)
+        const walletObj = { pendingId: wallet.pendingId + 1 }
+        if (type === 'transaction') {
+            const { amount } = req.body
+            walletObj.transactionId = wallet.transactionId + 1
+            walletObj.balanceLock = wallet.balanceLock + amount
+        } else {
+            walletObj.consensusId = wallet.consensusId + 1
+        }
+        const walletUpdate = await Wallet.findByIdAndUpdate(walletId, walletObj, { new: true, runValidators: true })
         res.status(StatusCodes.CREATED).json({
             status: "Success",
-            data: proposal
+            data: {
+                proposal,
+                walletUpdate
+            }
         })
     }
 }
@@ -23,6 +37,7 @@ const voteProposal = async (req, res) => {
         throw new NotFoundError(`Not found proposal with id ${proposalID}`)
     } else {
         let proposalObj
+
         let { votes, accept, reject } = proposal
         votes.push(voteResult)
         if (voteResult.vote) {
@@ -30,7 +45,6 @@ const voteProposal = async (req, res) => {
         } else {
             reject += 1
         }
-
         proposalObj = { votes, accept, reject }
         if (state) {
             proposalObj.state = state

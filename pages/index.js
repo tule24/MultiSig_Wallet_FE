@@ -4,7 +4,7 @@ import { WalletInfo, IdAccordian, CreateID } from '@/components/home'
 import { useSelector } from 'react-redux'
 const Home = () => {
   const { proposals } = useSelector(state => state.ProposalReducer)
-  const ids = useMemo(proposals.filter(ele => ele.state === 'pending'), [proposals])
+  const ids = useMemo(() => proposals.filter(ele => ele.state === 'pending'), [proposals])
   return (
     <>
       <Head>

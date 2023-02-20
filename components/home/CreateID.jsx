@@ -3,7 +3,7 @@ import { AiOutlineDollarCircle } from 'react-icons/ai'
 import { TbUserCircle } from 'react-icons/tb'
 import { ModalID } from './index'
 import { useDispatch } from 'react-redux'
-import { createTransID, createConsID } from '@/redux/thunk/ProposalAction'
+import { createID } from '@/redux/thunk/ProposalAction'
 
 const CreateID = () => {
     const dispatch = useDispatch()
@@ -12,16 +12,6 @@ const CreateID = () => {
     const handleClick = (type) => {
         setType(type)
         setOpenModal(true)
-    }
-    const handleDispatch = (data) => {
-        if (type === 'transaction') {
-            dispatch(createTransID(data))
-        } else if (type === 'consensus') {
-            dispatch(createConsID(data))
-        } else {
-            console.log('Please choose type of ID')
-        }
-
     }
     return (
         <div className='mt-20'>
@@ -42,7 +32,7 @@ const CreateID = () => {
                     Change consensus <TbUserCircle size={30} className='inline' />
                 </button>
             </div>
-            {openModal && <ModalID type={type} setOpenModal={setOpenModal} handleDispatch={handleDispatch} />}
+            {openModal && <ModalID type={type} setOpenModal={setOpenModal} handleDispatch={(data) => dispatch(createID(type, data))} />}
         </div>
     )
 }

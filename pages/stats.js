@@ -8,7 +8,7 @@ const Stats = () => {
     const ids = useMemo(proposals.filter(ele => ele.state !== 'pending'), [proposals])
     return (
         <div className='flex justify-center items-center flex-col pt-32 h-full w-full'>
-            <ChartStats />
+            {/* <ChartStats /> */}
             <div className='w-3/4'>
                 <IdAccordian title='ID HISTORY' ids={ids} />
             </div>

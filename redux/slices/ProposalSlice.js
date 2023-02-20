@@ -5,7 +5,7 @@ const initialState = {
 }
 
 const ProposalSlice = createSlice({
-    name: 'UserSlice',
+    name: 'ProposalSlice',
     initialState,
     reducers: {
         updateProposal: (state, action) => {

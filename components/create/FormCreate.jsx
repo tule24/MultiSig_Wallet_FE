@@ -6,7 +6,7 @@ import { createWallet } from '@/redux/thunk/WalletAction'
 const FormCreate = () => {
   const [total, setTotal] = useState([])
   const [approvalRequired, setApprovalRequired] = useState(1)
-  const { currentAccount } = useSelector(state => state.Web3Reducer)
+  const { address } = useSelector(state => state.UserReducer.user)
   const dispatch = useDispatch()
   const handleInput = (i, value) => {
     total[i] = value.toLowerCase()
@@ -15,7 +15,7 @@ const FormCreate = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (approvalRequired <= total.length + 1) {
-      total.unshift(currentAccount)
+      total.unshift(address)
       const walletObj = {
         owners: total,
         approvalRequired: Number(approvalRequired)
@@ -33,7 +33,7 @@ const FormCreate = () => {
           <label className="block mb-2 text-md font-semibold text-gray-900 dark:text-white">Owner 1</label>
           <input
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            value={currentAccount}
+            value={address}
             readOnly
           />
         </div>

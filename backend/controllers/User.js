@@ -27,7 +27,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const { userID } = req.query
-    const {address} = req.body 
+    const { address } = req.body
     if (address) {
         res.status(StatusCodes.BAD_REQUEST).send("address is immutable")
     } else {
