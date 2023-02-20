@@ -15,21 +15,32 @@ const createProposal = async (req, res) => {
     }
 }
 
-const updateProposal = async (req, res) => {
+const voteProposal = async (req, res) => {
     const { proposalID } = req.query
-    const { walletId, contractId, type, creator } = req.body
-    if (walletId || contractId || type || creator) {
-        res.status(StatusCodes.BAD_REQUEST).send("walletId, contractId, type, creator are immutable")
+    const { voteResult, state } = req.body
+    const proposal = await Proposal.findById(proposalID)
+    if (!proposal) {
+        throw new NotFoundError(`Not found proposal with id ${proposalID}`)
     } else {
-        const proposal = await Proposal.findByIdAndUpdate(proposalID, req.body, { new: true, runValidators: true })
-        if (!proposal) {
-            throw new NotFoundError(`Not found proposal with id ${proposalID}`)
+        let proposalObj
+        let { votes, accept, reject } = proposal
+        votes.push(voteResult)
+        if (voteResult.vote) {
+            accept += 1
         } else {
-            res.status(StatusCodes.OK).json({
-                status: "Success",
-                data: proposal
-            })
+            reject += 1
         }
+
+        proposalObj = { votes, accept, reject }
+        if (state) {
+            proposalObj.state = state
+            proposalObj.finishAt = Date.now()
+        }
+        const newProposal = await Proposal.findByIdAndUpdate(proposalID, proposalObj, { new: true, runValidators: true })
+        res.status(StatusCodes.OK).json({
+            status: "Success",
+            data: newProposal
+        })
     }
 }
 
@@ -55,5 +66,5 @@ const getProposal = async (req, res) => {
 }
 
 
-export { createProposal, updateProposal, getAllProposal, getProposal }
+export { createProposal, voteProposal, getAllProposal, getProposal }
 

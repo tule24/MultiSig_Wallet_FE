@@ -44,14 +44,6 @@ const walletSchema = new Schema({
         type: Number,
         default: 0
     },
-    balanceFree: {
-        type: Number,
-        default: 0
-    },
-    totalId: {
-        type: Number,
-        default: 0
-    },
     transactionId: {
         type: Number,
         default: 0

@@ -1,19 +1,17 @@
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
-import { createUser } from './UserAction'
 import { updateWeb3 } from '../slices/Web3Slice'
-
-const fetchContract = (signerOrProvider) => new ethers.Contract(_, _, signerOrProvider)
+import { MultiSigFactoryABI } from '../contracts'
+import { fetchContract } from '../utils'
 
 export const handleAccountChange = (accounts) => async (dispatch) => {
     if (accounts.length) {
-        dispatch(createUser(accounts[0]))
         const web3Modal = new Web3Modal()
         const connection = await web3Modal.connect()
         const provider = new ethers.providers.Web3Provider(connection)
         const signer = provider.getSigner()
-        const contract = fetchContract(signer)
-        dispatch(updateWeb3({ contract, signer }))
+        const contractFactory = fetchContract(process.env.NEXT_PUBLIC_MULTISIG_WALLET_ADDRESS, MultiSigFactoryABI, signer)
+        dispatch(updateWeb3({ currentAccount: accounts[0], contractFactory, signer, provider }))
     } else {
         console.log("No account found")
     }

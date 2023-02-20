@@ -17,7 +17,7 @@ const proposalSchema = new Schema({
         type: String,
         immutable: true,
         require: [true, "Please provide type of proposal"],
-        enum: ["Transaction", "Consensus"]
+        enum: ["transaction", "consensus"]
     },
     creator: {
         type: Types.ObjectId,
@@ -27,19 +27,19 @@ const proposalSchema = new Schema({
     },
     state: {
         type: String,
-        default: "Pending",
-        enum: ["Pending", "Success", "Fail"]
+        default: "pending",
+        enum: ["pending", "success", "fail"]
     },
     accept: {
         type: Number,
-        default: 0
+        default: 1
     },
     reject: {
         type: Number,
         default: 0
     },
-    vote: [Object],
-    ownersAdd: {
+    votes: [Object],
+    addOwners: {
         type: [String],
         validate: {
             validator: function (val) {
@@ -48,7 +48,7 @@ const proposalSchema = new Schema({
             message: "Only accept eth wallet"
         }
     },
-    ownersDel: {
+    delOwners: {
         type: [String],
         validate: {
             validator: function (val) {

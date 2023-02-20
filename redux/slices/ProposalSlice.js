@@ -1,26 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    pending: [],
-    complete: []
+    proposals: []
 }
 
 const ProposalSlice = createSlice({
     name: 'UserSlice',
     initialState,
     reducers: {
-        addPendingProposal: (state, action) => {
-
-        },
-        addCompleteProposal: (state, action) => {
-
-        },
         updateProposal: (state, action) => {
-
+            state.proposals = [...action.payload]
         }
     }
 })
 
 const { actions, reducer } = ProposalSlice
-export const { addPendingProposal, addCompleteProposal, updateProposal } = actions
+export const { updateProposal } = actions
 export default reducer

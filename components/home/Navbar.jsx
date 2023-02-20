@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { FaGoogleWallet } from 'react-icons/fa'
 import { CgKey } from 'react-icons/cg'
 import { TfiWallet } from 'react-icons/tfi'
 import { useTheme } from 'next-themes'
 import { useDispatch, useSelector } from 'react-redux'
+import { connectWallet, checkWalletConnected } from '@/redux/thunk/Web3Action'
 import { createUser } from '@/redux/thunk/UserAction'
 import { minifyAddress } from '@/helpers'
 import 'react-toastify/dist/ReactToastify.css'
@@ -13,7 +14,11 @@ import { ToastContainer } from 'react-toastify'
 const Navbar = () => {
     const { theme, setTheme } = useTheme()
     const dispatch = useDispatch()
-    const { address } = useSelector(state => state.UserReducer)
+    const { currentAccount } = useSelector(state => state.Web3Reducer)
+
+    useEffect(() => {
+        dispatch(checkWalletConnected())
+    }, [])
     return (
         <header className="px-10 py-4 bg-violet-500 fixed right-0 left-0 z-50">
             <div className="container flex justify-between items-center h-16 mx-auto">
@@ -33,9 +38,9 @@ const Navbar = () => {
                     </Link>
                     <button
                         className="inline-flex items-center border font-semibold py-2 px-3 focus:outline-none hover:bg-violet-800 rounded text-lg mt-4 md:mt-0"
-                        onClick={() => { dispatch(createUser("0x1BfC7c4Bce1DB93Ea3F48BFC52A6a7fccc770D3B")) }}
+                        onClick={() => { dispatch(connectWallet()) }}
                     >
-                        <TfiWallet size={20} className="mr-2" />{address ? minifyAddress(address) : 'Connect'}
+                        <TfiWallet size={20} className="mr-2" />{currentAccount ? minifyAddress(currentAccount) : 'Connect'}
                     </button>
                     <label className="inline-flex relative items-center mr-5 cursor-pointer">
                         <input

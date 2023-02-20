@@ -1,8 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    contract: null,
-    signer: null
+    currentAccount: null,
+    provider: null,
+    signer: null,
+    contractWallet: null,
+    contractFactory: null,
 }
 
 const Web3Slice = createSlice({
@@ -10,8 +13,12 @@ const Web3Slice = createSlice({
     initialState,
     reducers: {
         updateWeb3: (state, action) => {
-            const { payload } = action
-            state = { ...payload }
+            const { currentAccount, contractFactory, contractWallet, signer, provider } = action.payload
+            contractFactory ? state.contractFactory = contractFactory : {}
+            signer ? state.signer = signer : {}
+            contractWallet ? state.contractWallet = contractWallet : {}
+            currentAccount ? state.currentAccount = currentAccount : {}
+            provider ? state.provider = provider : {}
         }
     }
 })

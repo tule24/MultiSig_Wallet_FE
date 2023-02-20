@@ -1,4 +1,4 @@
-import { userServices } from '../services/UserServices'
+import { userServices } from '../services'
 import { updateUser } from '../slices/UserSlice'
 import { StatusCodes } from 'http-status-codes'
 

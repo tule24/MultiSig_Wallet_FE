@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { MdClose } from 'react-icons/md'
 
-const ModalID = ({ type, setOpenModal }) => {
+const ModalID = ({ type, setOpenModal, handleDispatch }) => {
   const [addOwners, setAddOwners] = useState([])
   const [delOwners, setDelOwners] = useState([])
   const [approvalRequired, setApprovalRequired] = useState(1)
@@ -18,13 +18,9 @@ const ModalID = ({ type, setOpenModal }) => {
   const [transaction, setTransaction] = useState(null)
   const handleSubmit = () => {
     if (type === 'transaction') {
-      console.log(transaction)
+      handleDispatch(transaction)
     } else {
-      console.log({
-        addOwners,
-        delOwners,
-        approvalRequired
-      })
+      handleDispatch({ addOwners, delOwners, approvalRequired })
     }
     setOpenModal(false)
   }
@@ -40,12 +36,12 @@ const ModalID = ({ type, setOpenModal }) => {
             <>
               <div>
                 <label htmlFor="to" className="block font-semibold mb-1">Receiver</label>
-                <input onBlur={(e) => setTransaction({...transaction, [e.target.name]: e.target.value })} type="text" name="to" placeholder="Receiver address..." className="border text-base p-2 rounded-md focus:ring-inset dark:border-gray-700 dark:text-gray-100 dark:bg-gray-800 focus:ring-violet-400 w-full" />
+                <input onBlur={(e) => setTransaction({ ...transaction, [e.target.name]: e.target.value })} type="text" name="to" placeholder="Receiver address..." className="border text-base p-2 rounded-md focus:ring-inset dark:border-gray-700 dark:text-gray-100 dark:bg-gray-800 focus:ring-violet-400 w-full" />
               </div>
               <div className='mt-5'>
                 <label htmlFor="amount" className="block font-semibold mb-1">Amount</label>
                 <div className="flex">
-                  <input onBlur={(e) => setTransaction({...transaction, [e.target.name]: e.target.value })} type="number" name="amount" placeholder="Amount transfer..." className="flex flex-1 border text-base p-2 rounded-l-md focus:ring-inset dark:border-gray-700 dark:text-gray-100 dark:bg-gray-800 focus:ring-violet-400" />
+                  <input onBlur={(e) => setTransaction({ ...transaction, [e.target.name]: e.target.value })} type="number" name="amount" placeholder="Amount transfer..." className="flex flex-1 border text-base p-2 rounded-l-md focus:ring-inset dark:border-gray-700 dark:text-gray-100 dark:bg-gray-800 focus:ring-violet-400" />
                   <span className="flex items-center px-3 pointer-events-none text-base p-2 rounded-r-md dark:bg-gray-700">ETH</span>
                 </div>
               </div>

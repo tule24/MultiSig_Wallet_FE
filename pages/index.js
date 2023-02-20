@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import Head from 'next/head'
 import { WalletInfo, IdAccordian, CreateID } from '@/components/home'
+import { useSelector } from 'react-redux'
 const Home = () => {
+  const { proposals } = useSelector(state => state.ProposalReducer)
+  const ids = useMemo(proposals.filter(ele => ele.state === 'pending'), [proposals])
   return (
     <>
       <Head>
@@ -14,7 +17,7 @@ const Home = () => {
         <div className='w-4/5 mx-auto pt-32'>
           <WalletInfo />
           <CreateID />
-          <IdAccordian title='ID PENDING'/>
+          <IdAccordian title='ID PENDING' ids={ids} />
         </div>
       </div>
     </>

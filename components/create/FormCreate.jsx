@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { MdAdd, MdClose } from 'react-icons/md'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createWallet } from '@/redux/thunk/WalletAction'
 
 const FormCreate = () => {
   const [total, setTotal] = useState([])
   const [approvalRequired, setApprovalRequired] = useState(1)
+  const { currentAccount } = useSelector(state => state.Web3Reducer)
   const dispatch = useDispatch()
   const handleInput = (i, value) => {
     total[i] = value.toLowerCase()
@@ -14,9 +15,8 @@ const FormCreate = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (approvalRequired <= total.length + 1) {
-      total.unshift("0x1BfC7c4Bce1DB93Ea3F48BFC52A6a7fccc770D3B")
+      total.unshift(currentAccount)
       const walletObj = {
-        address: "0x1BfC7c4Bce1DB93Ea3F48BFC52A6a7fccc770D3B",
         owners: total,
         approvalRequired: Number(approvalRequired)
       }
@@ -33,7 +33,7 @@ const FormCreate = () => {
           <label className="block mb-2 text-md font-semibold text-gray-900 dark:text-white">Owner 1</label>
           <input
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            value={"0x1BfC7c4Bce1DB93Ea3F48BFC52A6a7fccc770D3B"}
+            value={currentAccount}
             readOnly
           />
         </div>
@@ -69,6 +69,7 @@ const FormCreate = () => {
             type='number'
             min={1}
             max={total.length + 1}
+            defaultValue={approvalRequired}
             className="w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             onChange={(e) => setApprovalRequired(e.target.value)}
             required

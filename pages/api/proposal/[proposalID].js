@@ -1,4 +1,4 @@
-import { getProposal, updateProposal } from '@/backend/controllers/Proposal'
+import { getProposal, voteProposal } from '@/backend/controllers/Proposal'
 import connectDB from '@/backend/db/connect'
 import catchAsync from '@/backend/middlewares/CatchAsync'
 import { ForbiddenError } from '@/backend/errors'
@@ -11,7 +11,7 @@ const handler = async (req, res) => {
             break
         }
         case "PATCH": {
-            await updateProposal(req, res)
+            await voteProposal(req, res)
             break
         }
         default: {
