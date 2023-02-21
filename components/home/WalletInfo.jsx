@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { BiCopy } from 'react-icons/bi'
 import { FaEthereum, FaUsers, FaLock, FaShieldAlt, FaRegClock } from 'react-icons/fa'
 import { PieChartStats } from '@/components/stats'
 import { useSelector } from 'react-redux'
-const data_1 = [
-    { name: 'FREE', value: 8 },
-    { name: 'LOCK', value: 2 },
-]
+import { eth2usd } from '@/helpers'
 const COLORS = ['#0088FE', '#FF4444'];
 
 const wallet = () => {
     const { wallet } = useSelector(state => state.WalletReducer)
+    // const [usd, setUsd] = useState(0)
+    // eth2usd(wallet?.balance).then(setUsd)
+    const data = [
+        { name: 'FREE', value: wallet?.balance - wallet?.balanceLock },
+        { name: 'LOCK', value: wallet?.balanceLock }
+    ]
     return (
         <div className='w-full border-2 rounded-lg border-dashed dark:border-white p-5 flex justify-between'>
             {wallet?.address ? (
@@ -32,9 +35,9 @@ const wallet = () => {
                         </div>
                         <h1 className='text-xl font-semibold mt-3 text-gray-500'>Stats </h1>
                         <div className='flex items-center flex-wrap'>
-                            <p><span>Total ID :</span> {wallet?.totalId}</p>
+                            <p><span>Total ID :</span> {wallet?.transactionId + wallet?.consensusId}</p>
                             <p className='mx-8' title='Transaction ID'><span>TxID :</span> {wallet?.transactionId} 🤑</p>
-                            <p title='Consensus ID'><span>CsID :</span> {wallet?.transactionId} 🤲</p>
+                            <p title='Consensus ID'><span>CsID :</span> {wallet?.consensusId} 🤲</p>
                             <p className='flex items-center ml-8'><span className='text-green-500 mr-2'>Success: </span> {wallet?.successId} 😄</p>
                             <p className='mx-8'><span className='text-red-500'>Failed :</span> {wallet?.failedId} 😭</p>
                             <p><span className='text-yellow-500'>Pending :</span> {wallet?.pendingId} 😐</p>
@@ -43,11 +46,11 @@ const wallet = () => {
                     </div>
                     <div className='text-center flex flex-col justify-evenly -mr-10'>
                         <div className='w-[450px] h-[200px] flex justify-center items-center'>
-                            {/* <PieChartStats data={data_1} colors={COLORS} /> */}
+                            <PieChartStats data={data} colors={COLORS} />
                         </div>
                         <div>
                             <p className='text-2xl'><span className='text-base font-semibold'>BALANCE</span> : {wallet?.balance} ETH<FaEthereum size={20} className='inline ml-1' /></p>
-                            <p className='text-2xl'><span className='text-base font-semibold'>USD</span> : 1000 $</p>
+                            <p className='text-2xl'><span className='text-base font-semibold'>USD</span> : {100} $</p>
                         </div>
                     </div>
                 </>)

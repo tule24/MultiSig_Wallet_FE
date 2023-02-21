@@ -1,4 +1,4 @@
-import { createUser, getAllUser, updateMultipleUser } from '@/backend/controllers/User'
+import { getVoteOfUser } from '@/backend/controllers/User'
 import connectDB from '@/backend/db/connect'
 import catchAsync from '@/backend/middlewares/CatchAsync'
 import { ForbiddenError } from '@/backend/errors'
@@ -6,16 +6,8 @@ import { ForbiddenError } from '@/backend/errors'
 connectDB()
 const handler = async (req, res) => {
     switch (req.method) {
-        case "POST": {
-            await createUser(req, res)
-            break
-        }
         case "GET": {
-            await getAllUser(req, res)
-            break
-        }
-        case "PATCH": {
-            await updateMultipleUser(req, res)
+            await getVoteOfUser(req, res)
             break
         }
         default: {

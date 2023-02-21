@@ -1,14 +1,16 @@
 import { walletServices } from '../services'
 import { updateWallet } from '../slices/WalletSlice'
-import { updateUserThunk } from '../thunk/UserAction'
+import { delWallet, updateUserThunk } from '../thunk/UserAction'
 import { setContractWallet } from '../thunk/Web3Action'
 import { StatusCodes } from 'http-status-codes'
 import { toast } from 'react-toastify'
 import { weiToEth, strToEth } from '../utils'
 import { getAllIDOfWallet } from './ProposalAction'
+import { updateLoading } from '../slices/LoaderSlice'
 
 export const createWallet = (walletObj) => async (dispatch, getState) => {
     try {
+        dispatch(updateLoading(true))
         const { owners, approvalRequired } = walletObj
         const { contractFactory } = getState().Web3Reducer
         const transaction = await contractFactory.createWallet(owners, approvalRequired)
@@ -17,12 +19,14 @@ export const createWallet = (walletObj) => async (dispatch, getState) => {
         const { data, status } = await walletServices.createWallet({ address, owners, approvalRequired })
         if (status === StatusCodes.CREATED) {
             dispatch(updateUserThunk(address))
+            dispatch(updateLoading(false))
             toast.success(`😁 A new multisig wallet create successfully 😁`)
         } else {
             console.log(data)
         }
     } catch (err) {
         console.log(err)
+        dispatch(updateLoading(false))
         toast.error(`😭 Something wrong when create wallet 😭`)
     }
 }
@@ -45,21 +49,25 @@ export const getWalletDetail = (field, val) => async (dispatch) => {
 
 export const depositWallet = (amount) => async (dispatch, getState) => {
     try {
+        dispatch(updateLoading(true))
         const { signer, contractWallet, provider } = getState().Web3Reducer
         await signer.sendTransaction({ to: contractWallet.address, value: strToEth(amount.toString()) })
 
         let balance = await provider.getBalance(contractWallet.address)
         balance = weiToEth(balance) * 1
 
-        const { data, status } = await walletServices.updateWallet(_id, { balance })
+        const { wallet } = getState().WalletReducer
+        const { data, status } = await walletServices.updateWallet(wallet._id, { balance })
         if (status === StatusCodes.OK) {
             dispatch(updateWallet(data.data))
+            dispatch(updateLoading(false))
             toast.success(`😁 Deposit ${amount} ETH to current wallet successfully 😁`)
         } else {
             console.log(data)
         }
     } catch (err) {
         console.log(err)
+        dispatch(updateLoading(false))
         toast.error(`😭 Something wrong when deposit to current wallet 😭`)
     }
 }
@@ -92,9 +100,18 @@ export const updateWalletThunk = (event, args) => async (dispatch, getState) => 
         const { data, status } = await walletServices.updateWallet(wallet._id, walletObj)
         if (status === StatusCodes.OK) {
             dispatch(updateWallet(data.data))
+            dispatch(delWallet(delOwners, wallet.address))
         } else {
             console.log(status)
         }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const resetWalletInfo = () => async (dispatch) => {
+    try {
+        dispatch(updateWallet({}))
     } catch (error) {
         console.log(error)
     }

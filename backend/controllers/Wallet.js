@@ -16,14 +16,15 @@ const createWallet = async (req, res) => {
 }
 
 const updateWallet = async (req, res) => {
-    const { walletID } = req.query
+    const { slug } = req.query
+    const walletId = slug[0]
     const { address } = req.body
     if (address) {
         res.status(StatusCodes.BAD_REQUEST).send("address is immutable")
     } else {
-        const wallet = await Wallet.findByIdAndUpdate(walletID, req.body, { new: true })
+        const wallet = await Wallet.findByIdAndUpdate(walletId, req.body, { new: true })
         if (!wallet) {
-            throw new NotFoundError(`Not found wallet with id ${walletID}`)
+            throw new NotFoundError(`Not found wallet with id ${walletId}`)
         } else {
             res.status(StatusCodes.OK).json({
                 status: "Success",

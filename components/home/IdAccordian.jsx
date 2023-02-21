@@ -51,7 +51,7 @@ const IdAccordian = ({ title, ids }) => {
                             <div className='py-5 px-10 flex justify-between'>
                                 <div>
                                     <p className='mb-1'><span className='text-gray-500 font-semibold'>To: </span><span className='tracking-wide'>{ele.to}</span></p>
-                                    <p className='mb-1'><span className='text-gray-500 font-semibold'>Amount: </span><span>{ele.amount} ETH (100$)</span></p>
+                                    <p className='mb-1'><span className='text-gray-500 font-semibold'>Amount: </span><span>{ele.amount} ETH</span></p>
                                     <p className='mb-1'><span className='text-gray-500 font-semibold'>Creator: </span><span>{ele.creator}</span></p>
                                 </div>
                                 <div className='flex justify-evenly'>

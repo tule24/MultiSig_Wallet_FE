@@ -1,11 +1,11 @@
-import { Schema, model, models } from "mongoose"
+import { Schema, model, models, Types } from "mongoose"
 import WAValidator from "wallet-address-validator"
 
 const proposalSchema = new Schema({
     walletId: {
-        type: Schema.Types.ObjectId,
+        type: Types.ObjectId,
         require: [true, "Please provide wallet id"],
-        immutable: true,
+        immutable: true
     },
     contractId: {
         type: Number,
@@ -21,6 +21,7 @@ const proposalSchema = new Schema({
     creator: {
         type: String,
         immutable: true,
+        lowercase: true,
         require: [true, "Please provide creator address"]
     },
     state: {
@@ -38,7 +39,10 @@ const proposalSchema = new Schema({
     },
     votes: [Object],
     addOwners: {
-        type: [String],
+        type: [{
+            type: String,
+            lowercase: true
+        }],
         validate: {
             validator: function (val) {
                 return val.every(el => WAValidator.validate(el, 'ETH', 'testnet'))
@@ -47,7 +51,10 @@ const proposalSchema = new Schema({
         }
     },
     delOwners: {
-        type: [String],
+        type: [{
+            type: String,
+            lowercase: true
+        }],
         validate: {
             validator: function (val) {
                 return val.every(el => WAValidator.validate(el, 'ETH', 'testnet'))
@@ -58,6 +65,7 @@ const proposalSchema = new Schema({
     approvalRequired: Number,
     to: {
         type: String,
+        lowercase: true,
         validate: {
             validator: function (val) {
                 return WAValidator.validate(val, 'ETH', 'testnet')

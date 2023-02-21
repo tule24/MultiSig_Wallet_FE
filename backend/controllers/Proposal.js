@@ -30,7 +30,8 @@ const createProposal = async (req, res) => {
 }
 
 const voteProposal = async (req, res) => {
-    const { proposalID } = req.query
+    const { slug } = req.query
+    const proposalID = slug[0]
     const { voteResult, state } = req.body
     const proposal = await Proposal.findById(proposalID)
     if (!proposal) {
@@ -68,7 +69,8 @@ const getAllProposal = async (req, res) => {
 }
 
 const getAllProposalOfWallet = async (req, res) => {
-    const { walletID } = req.query
+    const { slug } = req.query
+    const walletID = slug[0]
     const proposals = await Proposal.find({ walletId: walletID })
     if (!proposals) {
         throw new NotFoundError(`Not found proposal with walletId ${walletID}`)

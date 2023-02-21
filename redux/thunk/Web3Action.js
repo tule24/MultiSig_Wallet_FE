@@ -4,6 +4,8 @@ import { updateWeb3 } from '../slices/Web3Slice'
 import { createUser } from '../thunk/UserAction'
 import { MultiSigFactoryABI, MultiSigWalletABI } from '../contracts'
 import { fetchContract } from '../utils'
+import { resetIdInfo } from './ProposalAction'
+import { resetWalletInfo } from './WalletAction'
 
 export const handleAccountChange = (accounts) => async (dispatch) => {
     if (accounts.length) {
@@ -14,6 +16,8 @@ export const handleAccountChange = (accounts) => async (dispatch) => {
         const contractFactory = fetchContract(process.env.NEXT_PUBLIC_WALLET_FACTORY_ADDRESS, MultiSigFactoryABI, signer)
         dispatch(updateWeb3({ contractFactory, signer, provider }))
         dispatch(createUser(accounts[0]))
+        dispatch(resetIdInfo())
+        dispatch(resetWalletInfo())
     } else {
         console.log("No account found")
     }

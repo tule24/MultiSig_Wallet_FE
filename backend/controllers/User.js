@@ -1,6 +1,8 @@
 import User from '@/backend/models/User'
 import { StatusCodes } from 'http-status-codes'
 import { NotFoundError } from '../errors'
+import Proposal from '../models/Proposal'
+import { Types } from "mongoose"
 
 const createUser = async (req, res) => {
     const { address } = req.body
@@ -23,6 +25,24 @@ const createUser = async (req, res) => {
                 data: newUser
             })
         }
+    }
+}
+
+const updateMultipleUser = async (req, res) => {
+    const { users, wallet } = req.body
+    if (users.length < 1) {
+        res.status(StatusCodes.BAD_REQUEST).send("Please provide users array")
+    } else {
+        const allUser = await User.find({})
+        let newUsers = allUser.filter(user => users.includes(user.address)).map(user => {
+            const wallets = user.wallets.filter(address => address !== wallet)
+            return { userId: user._id, wallets }
+        })
+        let promiseUser = newUsers.map(async (user) => await User.findByIdAndUpdate(user.userId, { wallets: user.wallets }))
+
+        await Promise.all(promiseUser)
+            .then(() => res.status(StatusCodes.OK).json({ status: 'Success' }))
+            .catch(e => res.status(StatusCodes.BAD_REQUEST).json({ status: 'Fail', data: e }))
     }
 }
 
@@ -78,6 +98,42 @@ const getUser = async (req, res) => {
     }
 }
 
+const getVoteOfUser = async (req, res) => {
+    const { walletId } = req.body
+    const stats = await Proposal.aggregate([
+        {
+            $match: { walletId: Types.ObjectId(walletId) }
+        },
+        {
+            $unwind: "$votes"
+        },
+        {
+            $group: {
+                _id: "$votes",
+                count: { $count: {} }
+            }
+        }, 
+        {
+            $addFields: {
+                voter: "$_id.voter",
+                vote: "$_id.vote"
+            }
+        }, 
+        {
+            $project: {
+                _id: 0
+            }
+        }
+    ])
 
-export { createUser, updateUser, deleteUser, getAllUser, getUser }
+    // const resStats = stats.map(ele => {owner: ele._id.voter, vote: ele._id.vote}) 
+
+    res.status(StatusCodes.OK).json({
+        status: 'success',
+        total: stats.length,
+        data: stats
+    })
+}
+
+export { createUser, updateUser, deleteUser, getAllUser, getUser, updateMultipleUser, getVoteOfUser }
 

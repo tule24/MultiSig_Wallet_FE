@@ -16,7 +16,10 @@ const walletSchema = new Schema({
         }
     },
     owners: {
-        type: [String],
+        type: [{
+            type: String,
+            lowercase: true
+        }],
         require: [true, "Please provide array owners"],
         validate: {
             validator: function (val) {

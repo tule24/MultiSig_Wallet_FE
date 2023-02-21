@@ -7,6 +7,7 @@ import { useTheme } from 'next-themes'
 import { useDispatch, useSelector } from 'react-redux'
 import { connectWallet, checkWalletConnected } from '@/redux/thunk/Web3Action'
 import { depositWallet } from '@/redux/thunk/WalletAction'
+import { addWallet } from '@/redux/thunk/UserAction'
 import { minifyAddress } from '@/helpers'
 import { ModalID, WalletDropdown } from './index'
 import 'react-toastify/dist/ReactToastify.css'
@@ -17,7 +18,17 @@ const Navbar = () => {
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.UserReducer)
     const [openModal, setOpenModal] = useState(false)
-    const handleDispatch = (amount) => dispatch(depositWallet(amount))
+    const [type, setType] = useState('')
+    const handleDeposit = (amount) => dispatch(depositWallet(amount))
+    const handleAddWallet = (address) => dispatch(addWallet(address))
+    const handleClick = (input) => {
+        if (input === 'deposit'){
+            setType('deposit')
+        } else {
+            setType('addWallet')
+        }
+        setOpenModal(true)
+    } 
     useEffect(() => {
         dispatch(checkWalletConnected())
     }, [])
@@ -42,7 +53,12 @@ const Navbar = () => {
                         <p className="mr-5 hover:text-gray-900 font-semibold text-xl">Create Wallet</p>
                     </Link>
                     <div className="flex items-center mr-10">
-                        <button className='mr-5 hover:text-gray-900 font-semibold text-xl' onClick={() => setOpenModal(true)}>
+                        <button className='mr-5 hover:text-gray-900 font-semibold text-xl' onClick={() => handleClick('addWallet')}>
+                            Add Wallet
+                        </button>
+                    </div>
+                    <div className="flex items-center mr-10">
+                        <button className='mr-5 hover:text-gray-900 font-semibold text-xl' onClick={() => handleClick('deposit')}>
                             Deposit
                         </button>
                     </div>
@@ -73,7 +89,10 @@ const Navbar = () => {
                     </svg>
                 </button>
             </div>
-            {openModal && <ModalID type='deposit' setOpenModal={setOpenModal} handleDispatch={handleDispatch} />}
+            {openModal && (
+                type === 'deposit' ? <ModalID type='deposit' setOpenModal={setOpenModal} handleDispatch={handleDeposit} />
+                                    : <ModalID type='addWallet' setOpenModal={setOpenModal} handleDispatch={handleAddWallet} />
+            )}
             <ToastContainer closeButton={true} theme={theme} position='top-center' style={{ width: "max-content" }} />
         </header>
     )
