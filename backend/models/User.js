@@ -16,7 +16,10 @@ const userSchema = new Schema({
         }
     },
     wallets: {
-        type: [String],
+        type: [{
+            type: String,
+            lowercase: true
+        }],
         default: [],
         validate: {
             validator: function (val) {
@@ -27,4 +30,4 @@ const userSchema = new Schema({
     },
 }, { versionKey: false })
 
-export default models.User || model('User', userSchema)
+export default models?.User || model('User', userSchema)

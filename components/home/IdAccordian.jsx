@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { voteID } from '@/redux/thunk/ProposalAction'
 
 const IdAccordian = ({ title, ids }) => {
-    // const { currentAccount } = useSelector(state => state.Web3Reducer)
     const { user } = useSelector(state => state.UserReducer)
     const dispatch = useDispatch()
     return (
@@ -30,12 +29,12 @@ const IdAccordian = ({ title, ids }) => {
                                 <FcAlarmClock size={20} className='mr-[3px]' />{ele.createdAt}
                             </h1>
                             {title === 'ID PENDING' && (
-                                // !ele.votes.find(ele => ele.voter === user.address) && (
+                                !ele.votes.find(ele => ele.voter === user.address) && (
                                 <>
                                     <button type='button' onClick={() => dispatch(voteID(ele, true))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-green-700 dark:text-white dark:hover:bg-green-500 dark:hover:text-gray-800 mr-2">Accept</button>
                                     <button type='button' onClick={() => dispatch(voteID(ele, false))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-red-700 dark:text-white dark:hover:bg-red-500 dark:hover:text-gray-800">Reject</button>
                                 </>
-                                // )
+                                )
                             )}
                             {title === 'ID HISTORY' && (
                                 ele.state === 'success' ? (
@@ -82,12 +81,12 @@ const IdAccordian = ({ title, ids }) => {
                                 <FcAlarmClock size={20} className='mr-[3px]' />{ele.createdAt}
                             </h1>
                             {title === 'ID PENDING' && (
-                                // !ele.votes.find(ele => ele.voter === user.address) && (
+                                !ele.votes.find(ele => ele.voter === user.address) && (
                                     <>
                                         <button type='button' onClick={() => dispatch(voteID(ele, true))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-green-700 dark:text-white dark:hover:bg-green-500 dark:hover:text-gray-800 mr-2">Accept</button>
                                         <button type='button' onClick={() => dispatch(voteID(ele, false))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-red-700 dark:text-white dark:hover:bg-red-500 dark:hover:text-gray-800">Reject</button>
                                     </>
-                                // )
+                                )
                             )}
                             {title === 'ID HISTORY' && (
                                 ele.state === 'success' ? (

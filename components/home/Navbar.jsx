@@ -6,10 +6,9 @@ import { TfiWallet } from 'react-icons/tfi'
 import { useTheme } from 'next-themes'
 import { useDispatch, useSelector } from 'react-redux'
 import { connectWallet, checkWalletConnected } from '@/redux/thunk/Web3Action'
-import { depositWallet, getWalletDetail } from '@/redux/thunk/WalletAction'
-import { createUser } from '@/redux/thunk/UserAction'
+import { depositWallet } from '@/redux/thunk/WalletAction'
 import { minifyAddress } from '@/helpers'
-import { ModalID } from './index'
+import { ModalID, WalletDropdown } from './index'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
 
@@ -20,19 +19,21 @@ const Navbar = () => {
     const [openModal, setOpenModal] = useState(false)
     const handleDispatch = (amount) => dispatch(depositWallet(amount))
     useEffect(() => {
-        // dispatch(getWalletDetail('63f3b8cef73dc3b94bd4f80d'))
-        // dispatch(checkWalletConnected())
+        dispatch(checkWalletConnected())
     }, [])
     return (
         <header className="px-10 py-4 bg-violet-500 fixed right-0 left-0 z-50">
             <div className="container flex justify-between items-center h-16 mx-auto">
-                <Link href={{ pathname: '/' }} className="flex justify-center items-center">
-                    <p className='flex items-center font-semibold text-3xl relative'>
-                        <FaGoogleWallet size={60} color="black" />
-                        <span className='mr-2'>allet</span>
-                        <CgKey size={50} color="black" className='icon' />
-                    </p>
-                </Link>
+                <div className='flex items-center'>
+                    <Link href={{ pathname: '/' }} className="flex justify-center items-center mr-10">
+                        <p className='flex items-center font-semibold text-3xl relative'>
+                            <FaGoogleWallet size={60} color="black" />
+                            <span className='mr-2'>allet</span>
+                            <CgKey size={50} color="black" className='icon' />
+                        </p>
+                    </Link>
+                    <WalletDropdown />
+                </div>
                 <ul className="items-stretch hidden space-x-3 md:flex">
                     <Link href={{ pathname: '/stats' }} className="flex items-center mr-10">
                         <p className="mr-5 hover:text-gray-900 font-semibold text-xl">Stats</p>
@@ -47,9 +48,9 @@ const Navbar = () => {
                     </div>
                     <button
                         className="inline-flex items-center border font-semibold py-2 px-3 focus:outline-none hover:bg-violet-800 rounded text-lg mt-4 md:mt-0"
-                        onClick={() => { dispatch(createUser('0x1BfC7c4Bce1DB93Ea3F48BFC52A6a7fccc770D3B')) }}
+                        onClick={() => { dispatch(connectWallet()) }}
                     >
-                        <TfiWallet size={20} className="mr-2" />{user?.address ? minifyAddress(user.address) : 'Connect'}
+                        <TfiWallet size={20} className="mr-2" />{user?.address ? minifyAddress(user.address, 3) : 'Connect'}
                     </button>
                     <label className="inline-flex relative items-center mr-5 cursor-pointer">
                         <input

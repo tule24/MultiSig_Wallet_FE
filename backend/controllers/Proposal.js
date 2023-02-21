@@ -1,5 +1,5 @@
-import Proposal from '@/backend/models/Proposal'
-import Wallet from '@/backend/models/Wallet'
+import Proposal from '../models/Proposal'
+import Wallet from '../models/Wallet'
 import { StatusCodes } from 'http-status-codes'
 import { NotFoundError } from '../errors'
 
@@ -66,19 +66,20 @@ const getAllProposal = async (req, res) => {
         data: proposals
     })
 }
-const getProposal = async (req, res) => {
-    const { proposalID } = req.query
-    const proposal = await Proposal.findById(proposalID)
-    if (!proposal) {
-        throw new NotFoundError(`Not found proposal with id ${proposalID}`)
+
+const getAllProposalOfWallet = async (req, res) => {
+    const { walletID } = req.query
+    const proposals = await Proposal.find({ walletId: walletID })
+    if (!proposals) {
+        throw new NotFoundError(`Not found proposal with walletId ${walletID}`)
     } else {
         res.status(StatusCodes.OK).json({
             status: "success",
-            data: proposal
+            data: proposals
         })
     }
 }
 
 
-export { createProposal, voteProposal, getAllProposal, getProposal }
+export { createProposal, voteProposal, getAllProposal, getAllProposalOfWallet }
 

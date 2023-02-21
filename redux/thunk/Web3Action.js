@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import { updateWeb3 } from '../slices/Web3Slice'
 import { createUser } from '../thunk/UserAction'
-import { MultiSigFactoryABI } from '../contracts'
+import { MultiSigFactoryABI, MultiSigWalletABI } from '../contracts'
 import { fetchContract } from '../utils'
 
 export const handleAccountChange = (accounts) => async (dispatch) => {
@@ -11,8 +11,8 @@ export const handleAccountChange = (accounts) => async (dispatch) => {
         const connection = await web3Modal.connect()
         const provider = new ethers.providers.Web3Provider(connection)
         const signer = provider.getSigner()
-        const contractFactory = fetchContract(process.env.NEXT_PUBLIC_MULTISIG_WALLET_ADDRESS, MultiSigFactoryABI, signer)
-        dispatch(updateWeb3({ currentAccount: accounts[0], contractFactory, signer, provider }))
+        const contractFactory = fetchContract(process.env.NEXT_PUBLIC_WALLET_FACTORY_ADDRESS, MultiSigFactoryABI, signer)
+        dispatch(updateWeb3({ contractFactory, signer, provider }))
         dispatch(createUser(accounts[0]))
     } else {
         console.log("No account found")
@@ -40,6 +40,16 @@ export const connectWallet = () => async (dispatch) => {
         dispatch(handleAccountChange(accounts))
     } catch (error) {
         console.log("Something wrong while connecting to wallet", error)
+    }
+}
+
+export const setContractWallet = (address) => async (dispatch, getState) => {
+    try {
+        const { signer } = getState().Web3Reducer
+        const contractWallet = fetchContract(address, MultiSigWalletABI, signer)
+        dispatch(updateWeb3({ contractWallet }))
+    } catch (error) {
+        console.log("Something wrong while fetch contract wallet", error)
     }
 }
 

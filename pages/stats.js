@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 
 const Stats = () => {
     const { proposals } = useSelector(state => state.ProposalReducer)
-    const ids = useMemo(proposals.filter(ele => ele.state !== 'pending'), [proposals])
+    const ids = useMemo(() => proposals.filter(ele => ele.state !== 'pending'), [proposals])
     return (
         <div className='flex justify-center items-center flex-col pt-32 h-full w-full'>
             {/* <ChartStats /> */}

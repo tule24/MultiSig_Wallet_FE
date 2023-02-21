@@ -7,7 +7,8 @@ const createUser = async (req, res) => {
     if (!address) {
         res.status(StatusCodes.BAD_REQUEST).send("Please provide wallet address")
     } else {
-        const user = await User.findOne({ address })
+        const newAddress = address.toLowerCase()
+        const user = await User.findOne({ address: newAddress })
         if (user) {
             res.status(StatusCodes.OK).json({
                 status: "Success",

@@ -1,6 +1,6 @@
-const minifyAddress = (address) => {
-    const start = address.substring(0, 3)
-    const end = address.substring(address.length - 3)
+const minifyAddress = (address, len) => {
+    const start = address.substring(0, len)
+    const end = address.substring(address.length - len)
     return `${start}...${end}`
 }
 

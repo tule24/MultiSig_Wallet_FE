@@ -66,4 +66,4 @@ const walletSchema = new Schema({
     }
 }, { timestamps: true, versionKey: false })
 
-export default models.Wallet || model('Wallet', walletSchema)
+export default models?.Wallet || model('Wallet', walletSchema)

@@ -1,5 +1,4 @@
 import Wallet from "../models/Wallet"
-import User from '../models/User'
 import { StatusCodes } from 'http-status-codes'
 import { NotFoundError } from '../errors'
 
@@ -44,10 +43,13 @@ const getAllWallet = async (req, res) => {
 }
 
 const getWallet = async (req, res) => {
-    const { walletID } = req.query
-    const wallet = await Wallet.findById(walletID)
+    const { slug } = req.query
+    const field = slug[0]
+    const value = slug[1]
+
+    const wallet = await Wallet.find({ [field]: value })
     if (!wallet) {
-        throw new NotFoundError(`Not found wallet with id ${walletID}`)
+        throw new NotFoundError(`Not found wallet with at ${field} ${value}`)
     } else {
         res.status(StatusCodes.OK).json({
             status: "Success",

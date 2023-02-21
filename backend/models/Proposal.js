@@ -1,12 +1,11 @@
-import { Schema, model, models, Types } from "mongoose"
+import { Schema, model, models } from "mongoose"
 import WAValidator from "wallet-address-validator"
 
 const proposalSchema = new Schema({
     walletId: {
-        type: Types.ObjectId,
+        type: Schema.Types.ObjectId,
         require: [true, "Please provide wallet id"],
         immutable: true,
-        ref: 'Wallet'
     },
     contractId: {
         type: Number,
@@ -20,10 +19,9 @@ const proposalSchema = new Schema({
         enum: ["transaction", "consensus"]
     },
     creator: {
-        type: Types.ObjectId,
+        type: String,
         immutable: true,
-        require: [true, "Please provide creator id"],
-        ref: 'User'
+        require: [true, "Please provide creator address"]
     },
     state: {
         type: String,
@@ -74,4 +72,4 @@ const proposalSchema = new Schema({
     }
 }, { timestamps: true, versionKey: false })
 
-export default models.Proposal || model('Proposal', proposalSchema)
+export default models?.Proposal || model('Proposal', proposalSchema)
