@@ -73,11 +73,7 @@ const proposalSchema = new Schema({
             message: "Only accept eth wallet"
         }
     },
-    amount: Number,
-    finishAt: {
-        type: Date,
-        immutable: true
-    }
+    amount: Number
 }, { timestamps: true, versionKey: false })
 
 export default models?.Proposal || model('Proposal', proposalSchema)

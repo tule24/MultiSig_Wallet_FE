@@ -99,7 +99,7 @@ const getUser = async (req, res) => {
 }
 
 const getVoteOfUser = async (req, res) => {
-    const { walletId } = req.body
+    const { walletId } = req.query
     const stats = await Proposal.aggregate([
         {
             $match: { walletId: Types.ObjectId(walletId) }
@@ -112,21 +112,19 @@ const getVoteOfUser = async (req, res) => {
                 _id: "$votes",
                 count: { $count: {} }
             }
-        }, 
+        },
         {
             $addFields: {
                 voter: "$_id.voter",
                 vote: "$_id.vote"
             }
-        }, 
+        },
         {
             $project: {
                 _id: 0
             }
         }
     ])
-
-    // const resStats = stats.map(ele => {owner: ele._id.voter, vote: ele._id.vote}) 
 
     res.status(StatusCodes.OK).json({
         status: 'success',

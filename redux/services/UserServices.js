@@ -7,7 +7,7 @@ class UserServices extends BaseServices {
     updateMultipleUser = (data) => this.patch('/api/user', data)
     updateUser = (userID, data) => this.patch(`/api/user/${userID}`, data)
     deleteUser = (userID) => this.delete(`/api/user/${userID}`)
-    getUserVote = (walletId) => this.get('/api/stats', walletId)
+    getUserVote = (walletId) => this.get(`/api/userVote/${walletId}`)
 }
 
 export const userServices = new UserServices()

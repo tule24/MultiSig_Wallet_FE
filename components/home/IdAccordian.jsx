@@ -26,14 +26,14 @@ const IdAccordian = ({ title, ids }) => {
                                 <FcKey size={20} className='mr-[3px]' />Transaction
                             </h1>
                             <h1 className='text-lg font-semibold dark:text-white flex items-center mr-20'>
-                                <FcAlarmClock size={20} className='mr-[3px]' />{ele.createdAt}
+                                <FcAlarmClock size={20} className='mr-[3px]' />{new Date(ele.updatedAt).toLocaleString()}
                             </h1>
                             {title === 'ID PENDING' && (
                                 !ele.votes.find(ele => ele.voter === user.address) && (
-                                <>
-                                    <button type='button' onClick={() => dispatch(voteID(ele, true))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-green-700 dark:text-white dark:hover:bg-green-500 dark:hover:text-gray-800 mr-2">Accept</button>
-                                    <button type='button' onClick={() => dispatch(voteID(ele, false))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-red-700 dark:text-white dark:hover:bg-red-500 dark:hover:text-gray-800">Reject</button>
-                                </>
+                                    <>
+                                        <button type='button' onClick={() => dispatch(voteID(ele, true))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-green-700 dark:text-white dark:hover:bg-green-500 dark:hover:text-gray-800 mr-2">Accept</button>
+                                        <button type='button' onClick={() => dispatch(voteID(ele, false))} className="z-10 px-3 py-1 font-semibold rounded dark:bg-red-700 dark:text-white dark:hover:bg-red-500 dark:hover:text-gray-800">Reject</button>
+                                    </>
                                 )
                             )}
                             {title === 'ID HISTORY' && (
@@ -53,6 +53,10 @@ const IdAccordian = ({ title, ids }) => {
                                     <p className='mb-1'><span className='text-gray-500 font-semibold'>To: </span><span className='tracking-wide'>{ele.to}</span></p>
                                     <p className='mb-1'><span className='text-gray-500 font-semibold'>Amount: </span><span>{ele.amount} ETH</span></p>
                                     <p className='mb-1'><span className='text-gray-500 font-semibold'>Creator: </span><span>{ele.creator}</span></p>
+                                    {title === 'ID HISTORY' && <>
+                                        <p className='mb-1'><span className='text-gray-500 font-semibold'>Created At:</span>  {new Date(ele.createdAt).toLocaleString()}</p>
+                                        <p className='mb-1'><span className='text-gray-500 font-semibold'>Resolved At:</span>  {new Date(ele.updatedAt).toLocaleString()}</p>
+                                    </>}
                                 </div>
                                 <div className='flex justify-evenly'>
                                     <div className='flex flex-col text-center'>
@@ -78,7 +82,7 @@ const IdAccordian = ({ title, ids }) => {
                                 <FcKey size={20} className='mr-[3px]' />Consensus
                             </h1>
                             <h1 className='text-lg font-semibold dark:text-white flex items-center mr-20'>
-                                <FcAlarmClock size={20} className='mr-[3px]' />{ele.createdAt}
+                                <FcAlarmClock size={20} className='mr-[3px]' />{new Date(ele.updatedAt).toLocaleString()}
                             </h1>
                             {title === 'ID PENDING' && (
                                 !ele.votes.find(ele => ele.voter === user.address) && (
@@ -120,6 +124,10 @@ const IdAccordian = ({ title, ids }) => {
                                     </ul>
                                     <p className='mb-1'><span className='text-gray-500 font-semibold'>Approval required: </span><span>{ele.approvalRequired}</span></p>
                                     <p className='mb-1'><span className='text-gray-500 font-semibold'>Creator: </span><span>{ele.creator}</span></p>
+                                    {title === 'ID HISTORY' && <>
+                                        <p className='mb-1'><span className='text-gray-500 font-semibold'>Created At:</span>  {new Date(ele.createdAt).toLocaleString()}</p>
+                                        <p className='mb-1'><span className='text-gray-500 font-semibold'>Resolved At:</span>  {new Date(ele.updatedAt).toLocaleString()}</p>
+                                    </>}
                                 </div>
                                 <div className='flex justify-evenly'>
                                     <div className='flex flex-col text-center'>

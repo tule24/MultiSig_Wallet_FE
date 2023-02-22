@@ -2,6 +2,7 @@ import { userServices } from '../services'
 import { updateUser, updateUserStats } from '../slices/UserSlice'
 import { StatusCodes } from 'http-status-codes'
 import { toast } from 'react-toastify'
+import { minifyAddress } from '@/helpers'
 
 export const createUser = (address) => async (dispatch) => {
     try {
@@ -66,14 +67,13 @@ export const delWallet = (users, wallet) => async (dispatch, getState) => {
     }
 }
 
-export const getUserVoteThunk = () => async (dispatch, getState) => {
+export const getUserVoteThunk = (wallet) => async (dispatch) => {
     try {
-        const { wallet } = getState().WalletReducer
-        const { data, status } = await userServices.getUserVote({ walletId: wallet._id })
+        const { data, status } = await userServices.getUserVote(wallet._id)
         if (status === StatusCodes.OK) {
             const stats = wallet.owners.map(address => {
-                const res = { address }
-                data.data.filter(ele => ele.voter === address).forEach(ele => {
+                const res = { name: minifyAddress(address, 3), accept: 0, reject: 0, unvote: 0 }
+                data.data.filter(ele => ele.voter.toLowerCase() === address).forEach(ele => {
                     if (ele.vote) {
                         res.accept = ele.count
                     } else {
@@ -83,6 +83,7 @@ export const getUserVoteThunk = () => async (dispatch, getState) => {
                 res.unvote = wallet.transactionId + wallet.consensusId - res.accept - res.reject
                 return res
             })
+            console.log(stats)
             dispatch(updateUserStats(stats))
         }
     } catch (err) {

@@ -5,6 +5,7 @@ import { PieChartStats, BarChartStats } from './index'
 const COLORS = ['#00C851', '#FF4444', '#FFBB33'];
 const ChartStats = () => {
     const { wallet } = useSelector(state => state.WalletReducer)
+    const { userStats } = useSelector(state => state.UserReducer)
     const dataState = [
         { name: 'SUCCESS', value: wallet?.successId },
         { name: 'FAIL', value: wallet?.failedId },
@@ -13,26 +14,6 @@ const ChartStats = () => {
     const dataType = [
         { name: 'TRANSACTION', value: wallet?.transactionId },
         { name: 'CONSENSUS', value: wallet?.consensusId }
-    ]
-    const dataOwner = [
-        {
-            "name": "Owner A",
-            "approve": 5,
-            "reject": 3,
-            "unvote": 2,
-        },
-        {
-            "name": "Owner B",
-            "approve": 7,
-            "reject": 2,
-            "unvote": 1,
-        },
-        {
-            "name": "Owner C",
-            "approve": 6,
-            "reject": 2,
-            "unvote": 2,
-        }
     ]
     return (
         <div className='w-3/4 h-3/4'>
@@ -51,7 +32,7 @@ const ChartStats = () => {
                 </div>
             </div>
             <div className='w-full h-[500px] mt-20 mb-5'>
-                <BarChartStats data={dataOwner} />
+                <BarChartStats data={userStats} />
             </div>
             <h1 className='text-3xl font-bold tracking-wide text-violet-500 text-center mb-5'>OWNER VOTE STATS</h1>
         </div>

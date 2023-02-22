@@ -5,7 +5,7 @@ import { CgKey } from 'react-icons/cg'
 import { TfiWallet } from 'react-icons/tfi'
 import { useTheme } from 'next-themes'
 import { useDispatch, useSelector } from 'react-redux'
-import { connectWallet, checkWalletConnected } from '@/redux/thunk/Web3Action'
+import { connectWallet, checkWalletConnected, handleAccountChange } from '@/redux/thunk/Web3Action'
 import { depositWallet } from '@/redux/thunk/WalletAction'
 import { addWallet } from '@/redux/thunk/UserAction'
 import { minifyAddress } from '@/helpers'
@@ -22,15 +22,16 @@ const Navbar = () => {
     const handleDeposit = (amount) => dispatch(depositWallet(amount))
     const handleAddWallet = (address) => dispatch(addWallet(address))
     const handleClick = (input) => {
-        if (input === 'deposit'){
+        if (input === 'deposit') {
             setType('deposit')
         } else {
             setType('addWallet')
         }
         setOpenModal(true)
-    } 
+    }
     useEffect(() => {
         dispatch(checkWalletConnected())
+        window.ethereum.on('accountsChanged', (accounts) => dispatch(handleAccountChange(accounts)))
     }, [])
     return (
         <header className="px-10 py-4 bg-violet-500 fixed right-0 left-0 z-50">
@@ -91,7 +92,7 @@ const Navbar = () => {
             </div>
             {openModal && (
                 type === 'deposit' ? <ModalID type='deposit' setOpenModal={setOpenModal} handleDispatch={handleDeposit} />
-                                    : <ModalID type='addWallet' setOpenModal={setOpenModal} handleDispatch={handleAddWallet} />
+                    : <ModalID type='addWallet' setOpenModal={setOpenModal} handleDispatch={handleAddWallet} />
             )}
             <ToastContainer closeButton={true} theme={theme} position='top-center' style={{ width: "max-content" }} />
         </header>

@@ -42,7 +42,7 @@ const wallet = () => {
                             <p className='mx-8'><span className='text-red-500'>Failed :</span> {wallet?.failedId} 😭</p>
                             <p><span className='text-yellow-500'>Pending :</span> {wallet?.pendingId} 😐</p>
                         </div>
-                        <p className='flex items-center mt-5 italic text-sm text-gray-600'><FaRegClock className='mr-2' /> Last updated: {wallet?.updatedAt}</p>
+                        <p className='flex items-center mt-5 italic text-sm text-gray-600'><FaRegClock className='mr-2' /> Last updated: {wallet?.updatedAt.toLocaleString()}</p>
                     </div>
                     <div className='text-center flex flex-col justify-evenly -mr-10'>
                         <div className='w-[450px] h-[200px] flex justify-center items-center'>

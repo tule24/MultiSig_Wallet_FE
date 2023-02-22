@@ -1,6 +1,6 @@
 import { walletServices } from '../services'
 import { updateWallet } from '../slices/WalletSlice'
-import { delWallet, updateUserThunk } from '../thunk/UserAction'
+import { delWallet, getUserVoteThunk, updateUserThunk } from '../thunk/UserAction'
 import { setContractWallet } from '../thunk/Web3Action'
 import { StatusCodes } from 'http-status-codes'
 import { toast } from 'react-toastify'
@@ -39,6 +39,7 @@ export const getWalletDetail = (field, val) => async (dispatch) => {
             const { address, _id } = data.data[0]
             dispatch(setContractWallet(address))
             dispatch(getAllIDOfWallet(_id))
+            dispatch(getUserVoteThunk(data.data[0]))
         } else {
             console.log(status)
         }
