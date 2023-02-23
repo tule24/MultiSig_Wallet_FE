@@ -6,11 +6,14 @@ Fully customize how you manage your crypto assets in individual or group, with t
 
 ## Documentation
 Before using the features of this page, please set up and connect your ETH-Wallet (Goerli testnet) to the website
+
+---
 ### `page/create`
 To create a new wallet, you must provide the owners' addresses and the approval rate.
 
 ![createWallet](https://i.imgur.com/J90oBe3.png)
 
+---
 ### `page/index`
 General information about the wallet, please note that before creating transactions, you must deposit to it. We have 2 options ID:
 - `transactionID`: to make a transaction proposal
@@ -18,16 +21,19 @@ General information about the wallet, please note that before creating transacti
 
 ![createWallet](https://i.imgur.com/ueKGuG9.png)
 
+---
 ### `Make a transaction`
 To make a transaction, please provide `receiver address` and `amount`. Make sure that wallet doesn't have any `consensusID` pending before create a new `transactionID` 
 
 ![createWallet](https://i.imgur.com/iTwgPgA.png)
 
+---
 ### `Make a consensus`
 To make a consensus, please provide `add owners`, `del owners` and `approval required`. Make sure that wallet doesn't have any ID pending before create a new `consensusID` 
 
 ![createWallet](https://i.imgur.com/s8PNgye.png)
 
+---
 ### `page/stats`
 Detail information about the wallet, includes: `IDState rate`, `IDType rate`, `Owner Vote Stats`, `ID History`
 
