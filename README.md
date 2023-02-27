@@ -1,39 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Multisig Wallet
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
 
-## Getting Started
+## Description
+Fully customize how you manage your crypto assets in individual or group, with the option to require a predefined number of signatures to confirm transactions. Require multiple signers to confirm every transaction in order to execute it, which helps prevent unauthorized access to your wallet
 
-First, run the development server:
+## Documentation
+Before using the features of this page, please set up and connect your ETH-Wallet (Goerli testnet) to the website
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+---
+### `page/create`
+To create a new wallet, you must provide the owners' addresses and the approval rate.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![createWallet](https://i.imgur.com/J90oBe3.png)
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+---
+### `page/index`
+General information about the wallet, please note that before creating transactions, you must deposit to it. We have 2 options ID:
+- `transactionID`: to make a transaction proposal
+- `consensusID`: to change owners or approval required
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+![createWallet](https://i.imgur.com/ueKGuG9.png)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+---
+### `Make a transaction`
+To make a transaction, please provide `receiver address` and `amount`. Make sure that wallet doesn't have any `consensusID` pending before create a new `transactionID` 
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![createWallet](https://i.imgur.com/iTwgPgA.png)
 
-## Learn More
+---
+### `Make a consensus`
+To make a consensus, please provide `add owners`, `del owners` and `approval required`. Make sure that wallet doesn't have any ID pending before create a new `consensusID` 
 
-To learn more about Next.js, take a look at the following resources:
+![createWallet](https://i.imgur.com/s8PNgye.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
+### `page/stats`
+Detail information about the wallet, includes: `IDState rate`, `IDType rate`, `Owner Vote Stats`, `ID History`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
+![createWallet](https://i.imgur.com/RlMSkrM.png)
