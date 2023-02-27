@@ -37,10 +37,10 @@ const Navbar = () => {
         // window.ethereum.on('accountsChanged', (accounts) => dispatch(handleAccountChange(accounts)))
     }, [])
 
-    // const test = async () => {
-    //     const curId = await contractWallet.idsInfo(5)
-    //     return curId
-    // }
+    const test = async () => {
+        let balance = await provider.getBalance(contractWallet.address)
+        return balance
+    }
     return (
         <header className="px-10 py-4 bg-violet-500 fixed right-0 left-0 z-50">
             <div className="container flex justify-between items-center h-16 mx-auto">
@@ -53,7 +53,7 @@ const Navbar = () => {
                         </p>
                     </Link>
                     <WalletDropdown />
-                    {/* <button onClick={() => { test().then(res => console.log(res)) }}>Test</button> */}
+                    {/* <button onClick={() => { test().then(res => console.log(Number(res))) }}>Test</button> */}
                 </div>
                 <ul className="items-stretch hidden space-x-3 md:flex">
                     <Link href={{ pathname: '/stats' }} className="flex items-center mr-10">

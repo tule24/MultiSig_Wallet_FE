@@ -4,7 +4,7 @@ import { BiCopy } from 'react-icons/bi'
 import { FaEthereum, FaUsers, FaLock, FaShieldAlt, FaRegClock } from 'react-icons/fa'
 import { PieChartStats } from '@/components/stats'
 import { useSelector } from 'react-redux'
-import { eth2usd } from '@/helpers'
+// import { eth2usd } from '@/helpers'
 const COLORS = ['#0088FE', '#FF4444'];
 
 const wallet = () => {
@@ -45,12 +45,12 @@ const wallet = () => {
                         <p className='flex items-center mt-5 italic text-sm text-gray-600'><FaRegClock className='mr-2' /> Last updated: {new Date(wallet?.updatedAt).toLocaleString()}</p>
                     </div>
                     <div className='text-center flex flex-col justify-evenly -mr-10'>
-                        <div className='w-[450px] h-[200px] flex justify-center items-center'>
+                        <div className='w-[450px] h-[300px] flex justify-center items-center'>
                             <PieChartStats data={data} colors={COLORS} />
                         </div>
                         <div>
                             <p className='text-2xl'><span className='text-base font-semibold'>BALANCE</span> : {wallet?.balance} ETH<FaEthereum size={20} className='inline ml-1' /></p>
-                            <p className='text-2xl'><span className='text-base font-semibold'>USD</span> : {100} $</p>
+                            {/* <p className='text-2xl'><span className='text-base font-semibold'>USD</span> : {usd ? usd : '0'} $</p> */}
                         </div>
                     </div>
                 </>)

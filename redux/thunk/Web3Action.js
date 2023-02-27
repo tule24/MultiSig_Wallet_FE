@@ -3,9 +3,13 @@ import Web3Modal from 'web3modal'
 import { updateWeb3 } from '../slices/Web3Slice'
 import { createUser, resetUserVote } from '../thunk/UserAction'
 import { MultiSigFactoryABI, MultiSigWalletABI } from '../contracts'
-import { fetchContract } from '../utils'
+import { fetchContract, weiToEth } from '../utils'
 import { resetIdInfo } from './ProposalAction'
 import { resetWalletInfo } from './WalletAction'
+import { walletServices } from '../services'
+import { StatusCodes } from 'http-status-codes'
+import { updateWallet } from '../slices/WalletSlice'
+import { toast } from 'react-toastify'
 
 export const handleAccountChange = (accounts) => async (dispatch) => {
     if (accounts.length) {
@@ -52,9 +56,27 @@ export const setContractWallet = (address) => async (dispatch, getState) => {
     try {
         const { signer } = getState().Web3Reducer
         const contractWallet = fetchContract(address, MultiSigWalletABI, signer)
+        contractWallet.on('Deposit', () => dispatch(updateBalance()))
         dispatch(updateWeb3({ contractWallet }))
     } catch (error) {
         console.log("Something wrong while fetch contract wallet", error)
     }
 }
 
+export const updateBalance = () => async (dispatch, getState) => {
+    try {
+        const { contractWallet, provider } = getState().Web3Reducer
+        let balance = await provider.getBalance(contractWallet.address)
+        balance = weiToEth(balance) * 1
+        const { wallet } = getState().WalletReducer
+        const { data, status } = await walletServices.updateWallet(wallet._id, { balance })
+        if (status === StatusCodes.OK) {
+            dispatch(updateWallet(data.data))
+            // toast.success(`😁 Wallet just received ${weiToEth(amount)} ETH from ${sender} 😁`)
+        } else {
+            console.log(data)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}

@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createWallet } from '@/redux/thunk/WalletAction'
 import { toast } from 'react-toastify'
 import WAValidator from "wallet-address-validator"
+import { useRouter } from 'next/router'
 
 const FormCreate = () => {
+  const router = useRouter()
   const [total, setTotal] = useState([])
   const [approvalsRequired, setApprovalsRequired] = useState(2)
   const { address } = useSelector(state => state.UserReducer.user)
@@ -23,7 +25,7 @@ const FormCreate = () => {
           owners: total,
           approvalsRequired: Number(approvalsRequired)
         }
-        dispatch(createWallet(walletObj))
+        dispatch(createWallet(router, walletObj))
       } else {
         toast.error(`Make sure all owner's address is valid`)
       }

@@ -4,11 +4,11 @@ import { delWallet, getUserVoteThunk, updateUserThunk } from '../thunk/UserActio
 import { setContractWallet } from '../thunk/Web3Action'
 import { StatusCodes } from 'http-status-codes'
 import { toast } from 'react-toastify'
-import { weiToEth, strToEth } from '../utils'
+import { weiToEth, strToEth, sleep } from '../utils'
 import { getAllIDOfWallet } from './ProposalAction'
 import { updateLoading } from '../slices/LoaderSlice'
 
-export const createWallet = (walletObj) => async (dispatch, getState) => {
+export const createWallet = (router, walletObj) => async (dispatch, getState) => {
     try {
         dispatch(updateLoading(true))
         const { owners, approvalsRequired } = walletObj
@@ -20,6 +20,7 @@ export const createWallet = (walletObj) => async (dispatch, getState) => {
         if (status === StatusCodes.CREATED) {
             dispatch(updateUserThunk(address))
             dispatch(updateLoading(false))
+            router.push('/')
             toast.success(`😁 A new multisig wallet create successfully 😁`)
         } else {
             console.log(data)
@@ -53,6 +54,8 @@ export const depositWallet = (amount) => async (dispatch, getState) => {
         dispatch(updateLoading(true))
         const { signer, contractWallet, provider } = getState().Web3Reducer
         await signer.sendTransaction({ to: contractWallet.address, value: strToEth(amount.toString()) })
+
+        sleep(1000).then(() => { })
 
         let balance = await provider.getBalance(contractWallet.address)
         balance = weiToEth(balance) * 1
@@ -102,6 +105,7 @@ export const updateWalletThunk = (event, args) => async (dispatch, getState) => 
         const { data, status } = await walletServices.updateWallet(wallet._id, walletObj)
         if (status === StatusCodes.OK) {
             dispatch(updateWallet(data.data))
+            dispatch(getUserVoteThunk(data.data))
             dispatch(delWallet(delOwners, wallet.address))
         } else {
             console.log(status)
