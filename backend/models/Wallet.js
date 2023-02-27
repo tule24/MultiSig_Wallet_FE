@@ -28,7 +28,7 @@ const walletSchema = new Schema({
             message: "Only accept eth wallet"
         }
     },
-    approvalRequired: {
+    approvalsRequired: {
         type: Number,
         require: [true, "Please prove approve require"],
         min: 1,
@@ -36,7 +36,7 @@ const walletSchema = new Schema({
             validator: function (val) {
                 return val <= this.owners.length
             },
-            message: "approvalRequired must be <= totalOwner"
+            message: "approvalsRequired must be <= totalOwner"
         }
     },
     balance: {

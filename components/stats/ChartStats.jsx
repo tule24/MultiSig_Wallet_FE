@@ -18,13 +18,13 @@ const ChartStats = () => {
     return (
         <div className='w-3/4 h-3/4'>
             <div className='w-full h-full flex justify-between'>
-                <div className='p-4 w-[550px] h-[350px] flex flex-col border dark:border-white rounded-lg justify-center items-center'>
+                <div className='p-4 w-[550px] h-[350px] flex flex-col border border-black dark:border-white rounded-lg justify-center items-center'>
                     <div className='w-full h-4/5'>
                         <PieChartStats data={dataState} colors={COLORS} />
                     </div>
                     <h1 className='text-2xl font-bold tracking-wide text-violet-500'>ID STATE RATE</h1>
                 </div>
-                <div className='p-4 w-[550px] h-[350px] flex flex-col border dark:border-white rounded-lg justify-center items-center'>
+                <div className='p-4 w-[550px] h-[350px] flex flex-col border border-black dark:border-white rounded-lg justify-center items-center'>
                     <div className='w-full h-4/5'>
                         <PieChartStats data={dataType} colors={COLORS} />
                     </div>

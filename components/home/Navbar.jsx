@@ -12,11 +12,14 @@ import { minifyAddress } from '@/helpers'
 import { ModalID, WalletDropdown } from './index'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
+import Loader from './Loader'
+import { weiToEth } from '@/redux/utils'
 
 const Navbar = () => {
     const { theme, setTheme } = useTheme()
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.UserReducer)
+    const { contractWallet, provider } = useSelector(state => state.Web3Reducer)
     const [openModal, setOpenModal] = useState(false)
     const [type, setType] = useState('')
     const handleDeposit = (amount) => dispatch(depositWallet(amount))
@@ -31,8 +34,13 @@ const Navbar = () => {
     }
     useEffect(() => {
         dispatch(checkWalletConnected())
-        window.ethereum.on('accountsChanged', (accounts) => dispatch(handleAccountChange(accounts)))
+        // window.ethereum.on('accountsChanged', (accounts) => dispatch(handleAccountChange(accounts)))
     }, [])
+
+    // const test = async () => {
+    //     const curId = await contractWallet.idsInfo(5)
+    //     return curId
+    // }
     return (
         <header className="px-10 py-4 bg-violet-500 fixed right-0 left-0 z-50">
             <div className="container flex justify-between items-center h-16 mx-auto">
@@ -45,6 +53,7 @@ const Navbar = () => {
                         </p>
                     </Link>
                     <WalletDropdown />
+                    {/* <button onClick={() => { test().then(res => console.log(res)) }}>Test</button> */}
                 </div>
                 <ul className="items-stretch hidden space-x-3 md:flex">
                     <Link href={{ pathname: '/stats' }} className="flex items-center mr-10">
@@ -95,6 +104,7 @@ const Navbar = () => {
                     : <ModalID type='addWallet' setOpenModal={setOpenModal} handleDispatch={handleAddWallet} />
             )}
             <ToastContainer closeButton={true} theme={theme} position='top-center' style={{ width: "max-content" }} />
+            <Loader />
         </header>
     )
 }

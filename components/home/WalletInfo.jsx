@@ -16,7 +16,7 @@ const wallet = () => {
         { name: 'LOCK', value: wallet?.balanceLock }
     ]
     return (
-        <div className='w-full border-2 rounded-lg border-dashed dark:border-white p-5 flex justify-between'>
+        <div className='w-full border-2 rounded-lg border-dashed dark:border-white border-black p-5 flex justify-between'>
             {wallet?.address ? (
                 <>
                     <div>
@@ -25,13 +25,13 @@ const wallet = () => {
                         <h1 className='text-xl font-semibold text-gray-500'>List Owners </h1>
                         <ul className='list-disc ml-10'>
                             {wallet?.owners.map((address, i) => {
-                                return <li key={i}><span className='mr-2'>Owner {i + 1}:</span><span className='tracking-wide'>{address}</span> </li>
+                                return <li key={i}><span className='mr-2 font-semibold'>Owner {i + 1}:</span><span className='tracking-wide'>{address}</span> </li>
                             })}
                         </ul>
                         <h1 className='text-xl font-semibold mt-3 text-gray-500'>Consensus </h1>
                         <div className='flex'>
                             <p><span>Total owner :</span> {wallet?.owners.length}</p>
-                            <p className='mx-10'><span>Approval required :</span> {wallet?.approvalRequired}</p>
+                            <p className='mx-10'><span>Approval required :</span> {wallet?.approvalsRequired}</p>
                         </div>
                         <h1 className='text-xl font-semibold mt-3 text-gray-500'>Stats </h1>
                         <div className='flex items-center flex-wrap'>
@@ -42,7 +42,7 @@ const wallet = () => {
                             <p className='mx-8'><span className='text-red-500'>Failed :</span> {wallet?.failedId} 😭</p>
                             <p><span className='text-yellow-500'>Pending :</span> {wallet?.pendingId} 😐</p>
                         </div>
-                        <p className='flex items-center mt-5 italic text-sm text-gray-600'><FaRegClock className='mr-2' /> Last updated: {wallet?.updatedAt.toLocaleString()}</p>
+                        <p className='flex items-center mt-5 italic text-sm text-gray-600'><FaRegClock className='mr-2' /> Last updated: {new Date(wallet?.updatedAt).toLocaleString()}</p>
                     </div>
                     <div className='text-center flex flex-col justify-evenly -mr-10'>
                         <div className='w-[450px] h-[200px] flex justify-center items-center'>

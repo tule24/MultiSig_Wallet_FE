@@ -7,7 +7,7 @@ const Stats = () => {
     const { proposals } = useSelector(state => state.ProposalReducer)
     const ids = useMemo(() => proposals.filter(ele => ele.state !== 'pending'), [proposals])
     return (
-        <div className='flex justify-center items-center flex-col pt-32 h-full w-full'>
+        <div className='flex justify-center items-center flex-col pt-32 h-full w-full bg-white text-black dark:bg-black dark:text-white'>
             <ChartStats />
             <div className='w-3/4'>
                 <IdAccordian title='ID HISTORY' ids={ids} />

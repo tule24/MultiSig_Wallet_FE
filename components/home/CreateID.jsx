@@ -13,20 +13,21 @@ const CreateID = () => {
         setType(type)
         setOpenModal(true)
     }
+    
     return (
         <div className='mt-20'>
             <h1 className='text-4xl tracking-wide text-violet-500 text-center font-semibold'>CREATE NEW ID</h1>
             <div className='flex justify-evenly mt-10'>
                 <button
                     type="button"
-                    className="px-8 py-3 font-semibold rounded-full dark:bg-violet-600 dark:text-white dark:hover:text-black dark:hover:scale-110 transition-all duration-500"
+                    className="px-8 py-3 font-semibold rounded-full bg-violet-600 text-white hover:text-black hover:scale-110 transition-all duration-500"
                     onClick={() => handleClick('transaction')}
                 >
                     Make a transaction <AiOutlineDollarCircle size={30} className='inline' />
                 </button>
                 <button
                     type="button"
-                    className="px-8 py-3 font-semibold rounded-full dark:bg-violet-600 dark:text-white dark:hover:text-black dark:hover:scale-110 transition-all duration-500"
+                    className="px-8 py-3 font-semibold rounded-full bg-violet-600 text-white hover:text-black hover:scale-110 transition-all duration-500"
                     onClick={() => handleClick('consensus')}
                 >
                     Change consensus <TbUserCircle size={30} className='inline' />

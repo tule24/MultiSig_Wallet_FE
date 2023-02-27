@@ -49,7 +49,7 @@ export const addWallet = (wallet) => async (dispatch, getState) => {
         }
     } catch (error) {
         console.log(error)
-        toast.error(`😭 Something wrong when add Wallet 😭`)
+        toast.error(`😭 Something wrong when add wallet😭`)
     }
 }
 
@@ -72,7 +72,7 @@ export const getUserVoteThunk = (wallet) => async (dispatch) => {
         const { data, status } = await userServices.getUserVote(wallet._id)
         if (status === StatusCodes.OK) {
             const stats = wallet.owners.map(address => {
-                const res = { name: minifyAddress(address, 3), accept: 0, reject: 0, unvote: 0 }
+                const res = { name: minifyAddress(address, 3), accept: 0, reject: 0 }
                 data.data.filter(ele => ele.voter.toLowerCase() === address).forEach(ele => {
                     if (ele.vote) {
                         res.accept = ele.count
@@ -80,12 +80,18 @@ export const getUserVoteThunk = (wallet) => async (dispatch) => {
                         res.reject = ele.count
                     }
                 })
-                res.unvote = wallet.transactionId + wallet.consensusId - res.accept - res.reject
                 return res
             })
-            console.log(stats)
             dispatch(updateUserStats(stats))
         }
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const resetUserVote = () => async (dispatch) => {
+    try {
+        dispatch(updateUserStats([]))
     } catch (err) {
         console.log(err)
     }

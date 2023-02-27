@@ -11,7 +11,6 @@ const BarChartStats = ({data}) => {
                 <Legend />
                 <Bar dataKey="accept" fill="#00C851" />
                 <Bar dataKey="reject" fill="#FF4444" />
-                <Bar dataKey="unvote" fill="#FFBB33" />
             </BarChart>
         </ResponsiveContainer>
     )

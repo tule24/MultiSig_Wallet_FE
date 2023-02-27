@@ -29,9 +29,9 @@ export const createID = (type, dataObj) => async (dispatch, getState) => {
             transaction = await contractWallet.createTrans(to, strToEth(amount.toString()))
             proposalObj = { ...proposalObj, to, amount: Number(amount) }
         } else {
-            const { addOwners, delOwners, approvalRequired } = dataObj
-            transaction = await contractWallet.createCons(addOwners, delOwners, approvalRequired)
-            proposalObj = { ...proposalObj, addOwners, delOwners, approvalRequired: Number(approvalRequired) }
+            const { addOwners, delOwners, approvalsRequired } = dataObj
+            transaction = await contractWallet.createCons(addOwners, delOwners, approvalsRequired)
+            proposalObj = { ...proposalObj, addOwners, delOwners, approvalsRequired: Number(approvalsRequired) }
         }
 
         const receipt = await transaction.wait()

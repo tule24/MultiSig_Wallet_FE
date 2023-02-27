@@ -11,12 +11,12 @@ import { updateLoading } from '../slices/LoaderSlice'
 export const createWallet = (walletObj) => async (dispatch, getState) => {
     try {
         dispatch(updateLoading(true))
-        const { owners, approvalRequired } = walletObj
+        const { owners, approvalsRequired } = walletObj
         const { contractFactory } = getState().Web3Reducer
-        const transaction = await contractFactory.createWallet(owners, approvalRequired)
+        const transaction = await contractFactory.createWallet(owners, approvalsRequired)
         const receipt = await transaction.wait()
         const address = receipt.events[0].args.addressWallet
-        const { data, status } = await walletServices.createWallet({ address, owners, approvalRequired })
+        const { data, status } = await walletServices.createWallet({ address, owners, approvalsRequired })
         if (status === StatusCodes.CREATED) {
             dispatch(updateUserThunk(address))
             dispatch(updateLoading(false))
@@ -83,18 +83,19 @@ export const updateWalletThunk = (event, args) => async (dispatch, getState) => 
             walletObj.failedId = wallet.failedId + 1
         }
 
+        let delOwners
         if (event === 'ResolveTrans') {
             walletObj.balance = weiToEth(args.balance) * 1
             walletObj.balanceLock = weiToEth(args.balanceLock) * 1
         } else if (event === 'ResolveCons' && args.success) {
-            const addOwners = args.addOwners
-            const delOwners = args.delOwners
-            const approvalsRequired = Number(args.approvalRequired)
+            const addOwners = args.addOwners.map(address => address.toLowerCase())
+            delOwners = args.delOwners.map(address => address.toLowerCase())
+            const approvalsRequired = Number(args.approvalsRequired)
             const owners = wallet.owners
 
-            const newOwners = owners.filter(address => !delOwners.includes(address)).concat(addOwners)
+            const newOwners = owners.filter(address => !(delOwners.includes(address))).concat(addOwners)
 
-            walletObj.approvalRequired = approvalsRequired
+            walletObj.approvalsRequired = approvalsRequired
             walletObj.owners = newOwners
         }
 

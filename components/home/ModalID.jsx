@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { MdClose } from 'react-icons/md'
+import { toast } from 'react-toastify'
+import WAValidator from "wallet-address-validator"
 
 const ModalID = ({ type, setOpenModal, handleDispatch }) => {
   const [addOwners, setAddOwners] = useState([])
   const [delOwners, setDelOwners] = useState([])
-  const [approvalRequired, setApprovalRequired] = useState(1)
+  const [approvalsRequired, setApprovalsRequired] = useState(2)
   const handleInputAdd = (i, value) => {
     addOwners[i] = value.toLowerCase()
     setAddOwners([...addOwners])
@@ -20,19 +22,50 @@ const ModalID = ({ type, setOpenModal, handleDispatch }) => {
   const [address, setAddress] = useState('')
 
   const handleSubmit = () => {
-    if (type === 'transaction') {
-      handleDispatch(transaction)
-    } else if (type === 'consensus') {
-      handleDispatch({ addOwners, delOwners, approvalRequired })
-    } else if (type === 'deposit') {
-      handleDispatch(Number(amount))
-    } else {
-      handleDispatch(address)
+    switch (type) {
+      case 'transaction': {
+        if (!WAValidator.validate(transaction?.to, 'ETH', 'testnet')) {
+          toast.error('Make sure receiver address is valid')
+          break
+        }
+        if (transaction.amount <= 0) {
+          toast.error('Make sure amount transfer > 0')
+          break
+        }
+        handleDispatch(transaction)
+        setOpenModal(false)
+        break
+      }
+      case 'consensus': {
+        const isAddress = addOwners.every(address => WAValidator.validate(address, 'ETH', 'testnet')) && delOwners.every(address => WAValidator.validate(address, 'ETH', 'testnet'))
+        if (!isAddress) {
+          toast.error('Make sure all address is valid')
+          break
+        }
+        handleDispatch({ addOwners, delOwners, approvalsRequired })
+        setOpenModal(false)
+        break
+      }
+      case 'deposit': {
+        if (amount <= 0) {
+          toast.error('Make sure amount deposit > 0')
+          break
+        }
+        handleDispatch(Number(amount))
+        setOpenModal(false)
+        break
+      }
+      default: {
+        if (!WAValidator.validate(address, 'ETH', 'testnet')) {
+          toast.error('Make sure wallet address is valid')
+          break
+        }
+        handleDispatch(address)
+      }
     }
-    setOpenModal(false)
   }
   return (
-    <div className=' fixed top-0 left-0 right-0 h-screen flex justify-center items-center bg-gray-500 bg-opacity-60 z-50'>
+    <div className=' fixed top-0 left-0 right-0 h-screen flex justify-center items-center bg-gray-500 bg-opacity-60 z-50 text-white'>
       <div className='flex flex-col w-1/3 rounded-lg overflow-hidden'>
         <div className='grid grid-cols-[6fr_1fr] bg-violet-800'>
           <h3 className='p-3 text-center text-lg tracking-wide font-semibold'>{type === 'transaction' ? 'Create Transaction ID' : type === 'consensus' ? 'Create Consensus ID' : type === 'deposit' ? 'Deposit Wallet' : 'Add Wallet'}</h3>
@@ -44,13 +77,13 @@ const ModalID = ({ type, setOpenModal, handleDispatch }) => {
               <h2 className='mb-3 italic text-sm text-center text-yellow-600'>⚠️ Verify that wallet doesn't have any consensus ID pending ⚠️ <br /> before you make a transaction ID</h2>
               <div>
                 <label htmlFor="to" className="block font-semibold mb-1">Receiver</label>
-                <input onBlur={(e) => setTransaction({ ...transaction, [e.target.name]: e.target.value })} type="text" name="to" placeholder="Receiver address..." className="border text-base p-2 rounded-md focus:ring-inset dark:border-gray-700 dark:text-gray-100 dark:bg-gray-800 focus:ring-violet-400 w-full" />
+                <input onBlur={(e) => setTransaction({ ...transaction, [e.target.name]: e.target.value })} type="text" name="to" placeholder="Receiver address..." className="border text-base p-2 rounded-md focus:ring-inset border-gray-700 text-gray-100 bg-gray-800 focus:ring-violet-400 w-full" />
               </div>
               <div className='mt-5'>
                 <label htmlFor="amount" className="block font-semibold mb-1">Amount</label>
                 <div className="flex">
-                  <input onBlur={(e) => setTransaction({ ...transaction, [e.target.name]: e.target.value })} type="number" name="amount" placeholder="Amount transfer..." className="flex flex-1 border text-base p-2 rounded-l-md focus:ring-inset dark:border-gray-700 dark:text-gray-100 dark:bg-gray-800 focus:ring-violet-400" />
-                  <span className="flex items-center px-3 pointer-events-none text-base p-2 rounded-r-md dark:bg-gray-700">ETH</span>
+                  <input onBlur={(e) => setTransaction({ ...transaction, [e.target.name]: e.target.value })} type="number" name="amount" placeholder="Amount transfer..." className="flex flex-1 border text-base p-2 rounded-l-md focus:ring-inset border-gray-700 text-gray-100 bg-gray-800 focus:ring-violet-400" />
+                  <span className="flex items-center px-3 pointer-events-none text-base p-2 rounded-r-md bg-gray-700">ETH</span>
                 </div>
               </div>
             </>
@@ -70,7 +103,7 @@ const ModalID = ({ type, setOpenModal, handleDispatch }) => {
                     />
                     <button
                       type="button"
-                      className="ml-2 w-8 h-8 flex justify-center items-center font-semibold border border-dashed rounded dark:border-gray-100 dark:text-gray-100 hover:bg-violet-400 hover:bg-opacity-50"
+                      className="ml-2 w-8 h-8 flex justify-center items-center font-semibold border border-dashed rounded border-gray-100 text-gray-100 hover:bg-violet-400 hover:bg-opacity-50"
                       onClick={() => { addOwners.splice(i, 1); setAddOwners([...addOwners]) }}
                     ><MdClose size={25} /></button>
                   </div>)
@@ -90,7 +123,7 @@ const ModalID = ({ type, setOpenModal, handleDispatch }) => {
                     />
                     <button
                       type="button"
-                      className="ml-2 w-8 h-8 flex justify-center items-center font-semibold border border-dashed rounded dark:border-gray-100 dark:text-gray-100 hover:bg-violet-400 hover:bg-opacity-50"
+                      className="ml-2 w-8 h-8 flex justify-center items-center font-semibold border border-dashed rounded border-gray-100 text-gray-100 hover:bg-violet-400 hover:bg-opacity-50"
                       onClick={() => { delOwners.splice(i, 1); setDelOwners([...delOwners]) }}
                     ><MdClose size={25} /></button>
                   </div>)
@@ -98,8 +131,8 @@ const ModalID = ({ type, setOpenModal, handleDispatch }) => {
               }
               <hr className='my-5' />
               <div>
-                <label htmlFor="approvalRequired" className="block font-semibold mb-1">Approval Required</label>
-                <input onBlur={(e) => setApprovalRequired(e.target.value)} type='number' min={1} required placeholder="Approval required..." className="border text-base p-2 rounded-md focus:ring-inset dark:border-gray-700 dark:text-gray-100 dark:bg-gray-800 focus:ring-violet-400 w-full" />
+                <label htmlFor="approvalsRequired" className="block font-semibold mb-1">Approval Required</label>
+                <input onBlur={(e) => setApprovalsRequired(e.target.value)} type='number' min={2} required placeholder="Approval required..." className="border text-base p-2 rounded-md focus:ring-inset border-gray-700 text-gray-100 bg-gray-800 focus:ring-violet-400 w-full" />
               </div>
             </>
           ) : type === 'deposit' ? (
@@ -107,8 +140,8 @@ const ModalID = ({ type, setOpenModal, handleDispatch }) => {
               <div className='mt-5'>
                 <label className="block font-semibold mb-1">Amount</label>
                 <div className="flex">
-                  <input onBlur={(e) => setAmount(e.target.value)} type="number" name="amount" placeholder="Amount deposit..." className="flex flex-1 border text-base p-2 rounded-l-md focus:ring-inset dark:border-gray-700 dark:text-gray-100 dark:bg-gray-800 focus:ring-violet-400" />
-                  <span className="flex items-center px-3 pointer-events-none text-base p-2 rounded-r-md dark:bg-gray-700">ETH</span>
+                  <input onBlur={(e) => setAmount(e.target.value)} type="number" name="amount" placeholder="Amount deposit..." className="flex flex-1 border text-base p-2 rounded-l-md focus:ring-inset border-gray-700 text-gray-100 bg-gray-800 focus:ring-violet-400" />
+                  <span className="flex items-center px-3 pointer-events-none text-base p-2 rounded-r-md bg-gray-700">ETH</span>
                 </div>
               </div>
             </>
@@ -118,7 +151,7 @@ const ModalID = ({ type, setOpenModal, handleDispatch }) => {
               <div className='mt-5'>
                 <label className="block font-semibold mb-1">Wallet address</label>
                 <div className="flex">
-                  <input onBlur={(e) => setAddress(e.target.value)} type="text" name="address" placeholder="Wallet address..." className="flex flex-1 border text-base p-2 rounded-l-md focus:ring-inset dark:border-gray-700 dark:text-gray-100 dark:bg-gray-800 focus:ring-violet-400" />
+                  <input onBlur={(e) => setAddress(e.target.value)} type="text" name="address" placeholder="Wallet address..." className="flex flex-1 border text-base p-2 rounded-l-md focus:ring-inset border-gray-700 text-gray-100 bg-gray-800 focus:ring-violet-400" />
                 </div>
               </div>
             </>
@@ -127,7 +160,7 @@ const ModalID = ({ type, setOpenModal, handleDispatch }) => {
           <div className='flex justify-center'>
             <button
               type="button"
-              className="px-5 py-2 mt-8 font-semibold rounded-md text-sm dark:bg-violet-600 dark:text-white dark:hover:text-black transition-all duration-500"
+              className="px-5 py-2 mt-8 font-semibold rounded-md text-sm bg-violet-600 text-white hover:text-black transition-all duration-500"
               onClick={() => handleSubmit()}
             >
               {type === 'deposit' ? 'DEPOSIT' : type === 'addWallet' ? 'ADD WALLET' : 'CREATE ID'}

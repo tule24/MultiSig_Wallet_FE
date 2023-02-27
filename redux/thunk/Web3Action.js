@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import { updateWeb3 } from '../slices/Web3Slice'
-import { createUser } from '../thunk/UserAction'
+import { createUser, resetUserVote } from '../thunk/UserAction'
 import { MultiSigFactoryABI, MultiSigWalletABI } from '../contracts'
 import { fetchContract } from '../utils'
 import { resetIdInfo } from './ProposalAction'
@@ -18,6 +18,7 @@ export const handleAccountChange = (accounts) => async (dispatch) => {
         dispatch(createUser(accounts[0]))
         dispatch(resetIdInfo())
         dispatch(resetWalletInfo())
+        dispatch(resetUserVote())
     } else {
         console.log("No account found")
     }

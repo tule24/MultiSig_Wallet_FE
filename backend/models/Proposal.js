@@ -62,7 +62,7 @@ const proposalSchema = new Schema({
             message: "Only accept eth wallet"
         }
     },
-    approvalRequired: Number,
+    approvalsRequired: Number,
     to: {
         type: String,
         lowercase: true,

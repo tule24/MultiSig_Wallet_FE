@@ -1,10 +1,10 @@
 import Wallet from "../models/Wallet"
 import { StatusCodes } from 'http-status-codes'
-import { NotFoundError } from '../errors'
+import { BadRequestError, NotFoundError } from '../errors'
 
 const createWallet = async (req, res) => {
-    const { address, owners, approvalRequired } = req.body
-    if (!address || !owners || !approvalRequired) {
+    const { address, owners, approvalsRequired } = req.body
+    if (!address || !owners || !approvalsRequired) {
         res.status(StatusCodes.BAD_REQUEST).send("Please provide address, owners & approval required")
     } else {
         const wallet = await Wallet.create(req.body)
@@ -22,6 +22,9 @@ const updateWallet = async (req, res) => {
     if (address) {
         res.status(StatusCodes.BAD_REQUEST).send("address is immutable")
     } else {
+        if (Object.values(req.body).includes(null)) {
+            throw new BadRequestError("Not update null value")
+        }
         const wallet = await Wallet.findByIdAndUpdate(walletId, req.body, { new: true })
         if (!wallet) {
             throw new NotFoundError(`Not found wallet with id ${walletId}`)

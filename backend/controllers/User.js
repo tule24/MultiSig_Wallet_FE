@@ -1,6 +1,6 @@
 import User from '@/backend/models/User'
 import { StatusCodes } from 'http-status-codes'
-import { NotFoundError } from '../errors'
+import { BadRequestError, NotFoundError } from '../errors'
 import Proposal from '../models/Proposal'
 import { Types } from "mongoose"
 
@@ -52,6 +52,9 @@ const updateUser = async (req, res) => {
     if (address) {
         res.status(StatusCodes.BAD_REQUEST).send("address is immutable")
     } else {
+        if (Object.values(req.body).includes(null)) {
+            throw new BadRequestError("Not update null value")
+        }
         const user = await User.findByIdAndUpdate(userID, req.body, { new: true, runValidators: true })
         if (!user) {
             throw new NotFoundError(`Not found user with id ${userID}`)
