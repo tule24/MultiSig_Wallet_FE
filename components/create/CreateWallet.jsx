@@ -3,26 +3,35 @@ import { MdAdd, MdClose } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 import { createWallet } from '@/redux/thunk/WalletAction'
 import { toast } from 'react-toastify'
-import WAValidator from "wallet-address-validator"
 import { useRouter } from 'next/router'
+import { checkAddressValid, checkDistinct, isOwner } from '@/helpers'
 
-const FormCreate = () => {
+const CreateWallet = () => {
   const router = useRouter()
-  const [total, setTotal] = useState([])
+  const [owners, setOwners] = useState([])
   const [approvalsRequired, setApprovalsRequired] = useState(2)
   const { address } = useSelector(state => state.UserReducer.user)
   const dispatch = useDispatch()
   const handleInput = (i, value) => {
-    total[i] = value.toLowerCase().trim()
-    setTotal([...total])
+    owners[i].address = value.toLowerCase().trim()
+    owners[i].error = ""
+    if (!checkAddressValid(value)) {
+      owners[i].error = "Address invalid"
+    }
+    if (isOwner(value, [address])) {
+      owners[i].error = "Address is exist"
+    }
+    if (!checkDistinct(owners.map(el => el.address))) {
+      owners[i].error = "Address is exist"
+    }
+    setOwners([...owners])
   }
   const handleSubmit = () => {
-    if (approvalsRequired <= total.length + 1) {
-      const isAddress = total.every(address => WAValidator.validate(address, 'ETH', 'testnet'))
+    if (approvalsRequired <= owners.length + 1) {
+      const isAddress = owners.every(value => value.address && value.error === "")
       if (isAddress) {
-        total.unshift(address)
         const walletObj = {
-          owners: total,
+          owners: owners.map(el => el.address).unshift(address),
           approvalsRequired: Number(approvalsRequired)
         }
         dispatch(createWallet(router, walletObj))
@@ -35,7 +44,7 @@ const FormCreate = () => {
   }
 
   useEffect(() => {
-    setTotal([])
+    setOwners([])
     setApprovalsRequired(2)
   }, [])
   return (
@@ -50,29 +59,29 @@ const FormCreate = () => {
             readOnly
           />
         </div>
-        {total.map((el, i) => (
+        {owners.map((el, i) => (
           <div className="mb-6 w-full" key={i}>
             <label className="block mb-2 text-md font-semibold text-gray-900 dark:text-white">Owner {i + 2}</label>
             <div className='flex items-center'>
               <input
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder='Enter owner wallet'
-                value={el}
-                onChange={(e) => handleInput(i, e.target.value)}
+                onBlur={(e) => handleInput(i, e.target.value)}
                 required
               />
               <button
                 type="button"
                 className="ml-2 w-8 h-8 flex justify-center items-center font-semibold border border-dashed rounded border-black dark:border-gray-100 dark:text-gray-100 hover:bg-violet-400 hover:bg-opacity-50"
-                onClick={() => { total.splice(i, 1); setTotal([...total]) }}
+                onClick={() => { owners.splice(i, 1); setOwners([...owners]) }}
               ><MdClose size={25} /></button>
             </div>
+            {el.error && <p className="text-sm font-semibold text-red-500 mt-1">{el.error}</p>}
           </div>
         ))}
         <button
           type="button"
           className="w-14 h-14 flex justify-center items-center font-semibold border border-dashed rounded border-black dark:border-gray-100 dark:text-gray-100 hover:bg-violet-400 hover:bg-opacity-50"
-          onClick={() => setTotal([...total, ""])}
+          onClick={() => setOwners([...owners, { address: "", error: "" }])}
         >
           <MdAdd size={25} />
         </button>
@@ -81,7 +90,7 @@ const FormCreate = () => {
           <input
             type='number'
             min={2}
-            max={total.length + 1}
+            max={owners.length + 1}
             defaultValue={approvalsRequired}
             className="w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             onChange={(e) => setApprovalsRequired(e.target.value)}
@@ -96,4 +105,4 @@ const FormCreate = () => {
   )
 }
 
-export default FormCreate
+export default CreateWallet

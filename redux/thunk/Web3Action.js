@@ -9,7 +9,6 @@ import { resetWalletInfo } from './WalletAction'
 import { walletServices } from '../services'
 import { StatusCodes } from 'http-status-codes'
 import { updateWallet } from '../slices/WalletSlice'
-import { toast } from 'react-toastify'
 
 export const handleAccountChange = (accounts) => async (dispatch) => {
     if (accounts.length) {
@@ -72,7 +71,6 @@ export const updateBalance = () => async (dispatch, getState) => {
         const { data, status } = await walletServices.updateWallet(wallet._id, { balance })
         if (status === StatusCodes.OK) {
             dispatch(updateWallet(data.data))
-            // toast.success(`😁 Wallet just received ${weiToEth(amount)} ETH from ${sender} 😁`)
         } else {
             console.log(data)
         }

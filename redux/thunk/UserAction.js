@@ -3,6 +3,7 @@ import { updateUser, updateUserStats } from '../slices/UserSlice'
 import { StatusCodes } from 'http-status-codes'
 import { toast } from 'react-toastify'
 import { minifyAddress } from '@/helpers'
+import { closeModal } from '../slices/ModalSlice'
 
 export const createUser = (address) => async (dispatch) => {
     try {
@@ -34,6 +35,7 @@ export const updateUserThunk = (wallet) => async (dispatch, getState) => {
 
 export const addWallet = (wallet) => async (dispatch, getState) => {
     try {
+        dispatch(closeModal())
         const { user } = getState().UserReducer
         const { contractFactory } = getState().Web3Reducer
         const isOwner = await contractFactory.ownerWallets(user.address, wallet)
@@ -46,6 +48,8 @@ export const addWallet = (wallet) => async (dispatch, getState) => {
             } else {
                 console.log(status)
             }
+        } else {
+            toast.error(`😭 You aren't wallet owner 😭`)
         }
     } catch (error) {
         console.log(error)

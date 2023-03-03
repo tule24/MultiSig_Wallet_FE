@@ -51,6 +51,7 @@ export const getWalletDetail = (field, val) => async (dispatch) => {
 
 export const depositWallet = (amount) => async (dispatch, getState) => {
     try {
+        dispatch(closeModal())
         dispatch(updateLoading(true))
         const { signer, contractWallet, provider } = getState().Web3Reducer
         await signer.sendTransaction({ to: contractWallet.address, value: strToEth(amount.toString()) })

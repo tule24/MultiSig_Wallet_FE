@@ -1,4 +1,5 @@
 import { proposalServices } from '../services'
+import { closeModal } from '../slices/ModalSlice'
 import { updateProposal } from '../slices/ProposalSlice'
 import { updateWallet } from '../slices/WalletSlice'
 import { updateWalletThunk } from './WalletAction'
@@ -9,6 +10,7 @@ import { updateLoading } from '../slices/LoaderSlice'
 
 export const createID = (type, dataObj) => async (dispatch, getState) => {
     try {
+        dispatch(closeModal())
         dispatch(updateLoading(true))
         const { contractWallet } = getState().Web3Reducer
         const { user } = getState().UserReducer
