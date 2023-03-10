@@ -12,7 +12,6 @@ import { closeModal } from '../slices/ModalSlice'
 export const createWallet = (router, walletObj) => async (dispatch, getState) => {
     try {
         dispatch(updateLoading(true))
-        console.log(walletObj)
         const { owners, approvalsRequired } = walletObj
         const { contractFactory } = getState().Web3Reducer
         const transaction = await contractFactory.createWallet(owners, approvalsRequired)
