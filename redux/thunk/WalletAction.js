@@ -7,10 +7,12 @@ import { toast } from 'react-toastify'
 import { weiToEth, strToEth, sleep } from '../utils'
 import { getAllIDOfWallet } from './ProposalAction'
 import { updateLoading } from '../slices/LoaderSlice'
+import { closeModal } from '../slices/ModalSlice'
 
 export const createWallet = (router, walletObj) => async (dispatch, getState) => {
     try {
         dispatch(updateLoading(true))
+        console.log(walletObj)
         const { owners, approvalsRequired } = walletObj
         const { contractFactory } = getState().Web3Reducer
         const transaction = await contractFactory.createWallet(owners, approvalsRequired)

@@ -30,8 +30,10 @@ const CreateWallet = () => {
     if (approvalsRequired <= owners.length + 1) {
       const isAddress = owners.every(value => value.address && value.error === "")
       if (isAddress) {
+        let newOwners = owners.map(el => el.address)
+        newOwners.unshift(address)
         const walletObj = {
-          owners: owners.map(el => el.address).unshift(address),
+          owners: newOwners,
           approvalsRequired: Number(approvalsRequired)
         }
         dispatch(createWallet(router, walletObj))
